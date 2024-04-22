@@ -124,3 +124,18 @@ RadarSimulation
 
 ### 예상 2)
 - 모의기 별 레포지토리를 별도로 생성하여 개별 개발 진행한다.
+
+## 커밋 컨벤션
+
+```
+#(이슈번호) FEAT: Task-SubTask-WorkPackage
+
+ex) #11 FEAT: 운용통제기-모의기능구현-시나리오 시작
+```
+
+- FEAT: 기능 추가
+- FIX: 버그 수정
+- REFACTOR: 코드 리팩토링
+- CHORE: 빌드 업무 수정, 패키지 매니저 수정
+- STYLE: 코드 포맷팅, 세미콜론 누락 수정
+
