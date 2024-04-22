@@ -1,7 +1,7 @@
 ---
 name: Work Issue Template
 about: 해당 템플릿을 사용하여 이슈 생성해주세요
-title: "[담당모의기(Task)] - SUBTASK(work package)"
+title: "[담당모의기(Task)] - SUBTASK (work package)"
 labels: ''
 assignees: ''
 
