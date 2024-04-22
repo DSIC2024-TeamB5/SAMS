@@ -1,0 +1,17 @@
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\Debug\TCCSimulator.exe.config
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\Debug\TCCSimulator.exe
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\Debug\TCCSimulator.pdb
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\TCCSimulator.csproj.AssemblyReference.cache
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\TCCSimulator.csproj.SuggestedBindingRedirects.cache
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\MainWindow.g.cs
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\App.g.cs
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\TCCSimulator_MarkupCompile.cache
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\TCCSimulator_MarkupCompile.lref
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\MainWindow.baml
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\TCCSimulator.g.resources
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\WpfApplication.Properties.Resources.resources
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\TCCSimulator.csproj.GenerateResource.cache
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\TCCSimulator.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\TCCSimulator.csproj.CopyComplete
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\TCCSimulator.exe
+C:\Users\User\Desktop\교육생용\4. 기타 자료\MiniProject_Software\MiniProject\src\WpfApplication\obj\Debug\TCCSimulator.pdb
