@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:WpfApplication1"
         mc:Ignorable="d"
         Title="OperationController" Height="820" Width="1500" Loaded="Window_Loaded" Closing="Window_Closing"
+        MouseDown="Img_ClickTest_MouseDown"
         >
-   
+
     <Grid Background="Black">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="8*"/>
@@ -17,12 +18,8 @@
         <Grid Grid.Column="0">
             <!--좌측 레이어 (초기 위치들은 마우스로 클릭)-->
             <!--1. 지도 이미지-->
-            <Image HorizontalAlignment="Left" Height="756" Margin="10,10,0,0" VerticalAlignment="Top" Width="1175" Source="/map.png"/>
-            <!--<Canvas x:Name="paintSurface" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" Margin="10,10,10,38" Opacity="0.2">
-                <Canvas.Background>
-                    <SolidColorBrush Color="White" Opacity="1" />
-                </Canvas.Background>
-            </Canvas>-->
+            <Image HorizontalAlignment="Left" Height="756" Margin="10,10,0,0" VerticalAlignment="Top" Width="1175" Source="/map.png" />
+            <Image x:Name="launcherImage" HorizontalAlignment="Left" Height="44" Margin="1112,694,0,0" VerticalAlignment="Top" Width="48" Stretch="Fill" Source="/3_LauncherImage.png"/>
             <!--2. 공중위협 초기위치-->
             <!--3. 공중위협 목적위치-->
             <!--4. 레이다 초기위치-->
@@ -30,8 +27,8 @@
             <!--6. 미사일 객체 표시-->
             <!--7. 공중위협 객체 표시-->
             <!--8. 각 객체 범례-->
-            
-            
+
+
 
         </Grid>
         <Grid Grid.Column="1">
