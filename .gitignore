@@ -14,6 +14,8 @@
 *.pdb
 *.csproj
 binx64Debug
+binAnyCPUDebug
+binx86Debug
 
 # Prerequisites
 *.d
