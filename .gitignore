@@ -1,3 +1,12 @@
+# lib
+**/lib/
+
+# Debug
+**/Debug/
+
+# obj
+**/obj/
+
 # .vs
 .vs/
 
