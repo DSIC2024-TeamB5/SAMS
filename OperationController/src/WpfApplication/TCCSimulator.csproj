@@ -176,6 +176,9 @@
       <Name>GUIConnector</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="map.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>Copy "$(ProjectDir)$(OutDir)$(TargetName)$(TargetExt)" "$(SolutionDir)bin$(PlatformName)$(ConfigurationName)"</PostBuildEvent>

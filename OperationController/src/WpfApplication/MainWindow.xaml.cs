@@ -7,6 +7,10 @@ using System.Windows.Interop;
 using System.Windows.Threading;
 using WpfApplication;
 using nframework.nom;
+using System.Windows.Input;
+using System.Threading.Tasks;
+using System.Windows.Shapes;
+
 
 namespace WpfApplication1
 {
@@ -15,6 +19,34 @@ namespace WpfApplication1
     /// </summary>
     public partial class MainWindow : Window
     {
+        // 캔버스에 선그리기
+        //private Point currentPoint = new Point();
+
+        //private void Canvas_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    if (e.ButtonState == MouseButtonState.Pressed)
+        //        currentPoint = e.GetPosition(this);
+        //}
+
+        //private void Canvas_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    if (e.LeftButton == MouseButtonState.Pressed)
+        //    {
+        //        Line line = new Line();
+
+        //        line.Stroke = SystemColors.WindowFrameBrush;
+        //        line.X1 = currentPoint.X;
+        //        line.Y1 = currentPoint.Y;
+        //        line.X2 = e.GetPosition(this).X;
+        //        line.Y2 = e.GetPosition(this).Y;
+
+        //        currentPoint = e.GetPosition(this);
+
+        //        paintSurface.Children.Add(line);
+        //    }
+        //}
+
+        //
         [DllImport("GUIConnectord.dll", CallingConvention = CallingConvention.Cdecl)]
         extern public static IntPtr CreateGUIConn();
         [DllImport("GUIConnectord.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -69,7 +101,7 @@ namespace WpfApplication1
                 Marshal.Copy(lParam, msgBuffer, 0, nomInfo.MsgLen);
 
                 nomInfo = (NOMInfo)Marshal.PtrToStructure(wParam, typeof(NOMInfo));
-                listBox.Items.Add(nomInfo.MsgName.ToString());
+                //listBox.Items.Add(nomInfo.MsgName.ToString());
             }
             else
             {
@@ -150,6 +182,11 @@ namespace WpfApplication1
         private void btnPlugOut_Click(object sender, RoutedEventArgs e)
         {
             DoPlugOut(GUIConnObj);
+        }
+
+        private void enemySpeedComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

@@ -5,19 +5,114 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApplication1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525" Loaded="Window_Loaded" Closing="Window_Closing">
-    <Grid>
+        Title="OperationController" Height="800" Width="1500" Loaded="Window_Loaded" Closing="Window_Closing"
+        >
+    <!--<Canvas  x:Name="paintSurface" MouseDown="Canvas_MouseDown" MouseMove="Canvas_MouseMove" Margin="0,0,0,0">
+        <Canvas.Background>
+            <SolidColorBrush Color="White" Opacity="1"/>
+        </Canvas.Background>
+    </Canvas>-->
+    <Grid Background="Black">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="449*"/>
-            <ColumnDefinition Width="68*"/>
+            <ColumnDefinition Width="8*"/>
+            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="85" Margin="28,96,0,0" VerticalAlignment="Top" Width="411"/>
-        <Button x:Name="btnCreateObj" Content="Create" HorizontalAlignment="Left" Margin="28,44,0,0" VerticalAlignment="Top" Width="70" Click="btnCreateObj_Click" Height="33"/>
-        <Button x:Name="btnSetHandle" Content="SetHandle" HorizontalAlignment="Left" Margin="124,44,0,0" VerticalAlignment="Top" Width="70" Click="btnSetHadle_Click" Height="33"/>
-        <Button x:Name="btnSendMsg" Content="SendMsg" HorizontalAlignment="Left" Margin="212,44,0,0" VerticalAlignment="Top" Width="85" Height="33" Click="btnSendMsg_Click"/>
-        <Button x:Name="btnDeleteObj" Content="Delete" HorizontalAlignment="Left" Margin="315,44,0,0" VerticalAlignment="Top" Width="70" Height="33" Click="btnDeleteObj_Click"/>
-        <Button x:Name="btnPlugIn" Content="PlugIn" HorizontalAlignment="Left" Height="30" Margin="44,224,0,0" VerticalAlignment="Top" Width="70" Click="btnPlugIn_Click" />
-        <Button x:Name="btnPlugOut" Content="PlugOut" HorizontalAlignment="Left" Height="30" Margin="154,224,0,0" VerticalAlignment="Top" Width="70" Click="btnPlugOut_Click"/>
+
+        <Grid Grid.Column="0">
+            <Image HorizontalAlignment="Left" Height="756" Margin="10,10,0,0" VerticalAlignment="Top" Width="1175" Source="/map.png"/>
+            <!--좌측 레이어 (초기 위치들은 마우스로 클릭)
+        1. 지도 이미지
+        2. 공중위협 초기위치
+        3. 공중위협 목적위치
+        4. 레이다 초기위치
+        5. 발사대 초기위치
+        6. 미사일 객체 표시
+        7. 공중위협 객체 표시
+        8. 각 객체 범례-->
+
+        </Grid>
+        <Grid Grid.Column="1">
+            <!--우측 레이어-->
+            <Grid.RowDefinitions>
+                <RowDefinition Height="5*"/>
+                <RowDefinition Height="2*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+            <!--1. 모의기 상태 레이아웃-->
+            <Grid Grid.Column="1" Grid.Row="0">
+                <Rectangle Fill="DarkGray" RadiusX="5" RadiusY="5"></Rectangle>
+                <!--발사대-->
+                <Ellipse HorizontalAlignment="Left" Margin="10,10,0,0" Fill="LightGreen" VerticalAlignment="Top" Height="30" Width="30"/>
+                <TextBlock FontSize="20" HorizontalAlignment="Left" Margin="48,10,0,0" TextWrapping="Wrap" Text="발사대" VerticalAlignment="Top" Height="30" Width="92"/>
+                <TextBlock FontSize="12" HorizontalAlignment="Left" Margin="48,45,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="79" RenderTransformOrigin="-0.049,0.685"><Run Language="ko-kr" Text="좌표"/></TextBlock>
+                <TextBlock FontSize="12" HorizontalAlignment="Left" Margin="10,62,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="115" RenderTransformOrigin="-0.049,0.685"><Run Language="ko-kr" Text="유도탄보유대수(기)"/></TextBlock>
+                <TextBlock x:Name="launcherPos" FontSize="12" HorizontalAlignment="Left" Margin="127,45,0,0" TextWrapping="Wrap" Text="초기 좌표" VerticalAlignment="Top" Height="18" Width="146" RenderTransformOrigin="-0.049,0.685"/>
+                <TextBlock x:Name="launcherCnt" FontSize="12" HorizontalAlignment="Left" Margin="127,62,0,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Height="18" Width="146" RenderTransformOrigin="-0.049,0.685"/>
+
+                <!--유도탄-->
+                <Ellipse HorizontalAlignment="Left" Margin="10,88,0,0" Fill="LightGreen" VerticalAlignment="Top" Height="30" Width="30"/>
+                <TextBlock FontSize="20" HorizontalAlignment="Left" Margin="48,88,0,0" TextWrapping="Wrap" Text="유도탄" VerticalAlignment="Top" Height="30" Width="92"/>
+                <TextBlock FontSize="12" HorizontalAlignment="Left" Margin="48,118,0,0" TextWrapping="Wrap" Text="좌표" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
+                <TextBlock FontSize="12" HorizontalAlignment="Left" Margin="22,136,0,0" TextWrapping="Wrap" Text="현재속도(마하)" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
+                <TextBlock x:Name="missilePos" FontSize="12" HorizontalAlignment="Left" Margin="127,118,0,0" TextWrapping="Wrap" Text="초기 좌표" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
+                <TextBlock x:Name="missileSpeed" FontSize="12" HorizontalAlignment="Left" Margin="127,136,0,0" TextWrapping="Wrap" Text="5" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
+
+                <!--레이다-->
+                <Ellipse HorizontalAlignment="Left" Margin="10,166,0,0" Fill="LightGreen" VerticalAlignment="Top" Height="30" Width="30" RenderTransformOrigin="0.567,3.135"/>
+                <TextBlock FontSize="20" HorizontalAlignment="Left" Margin="48,166,0,0" TextWrapping="Wrap" Text="레이다" VerticalAlignment="Top" Height="30" Width="92"/>
+                <TextBlock FontSize="12" HorizontalAlignment="Left" Margin="48,196,0,0" TextWrapping="Wrap" Text="좌표" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
+                <TextBlock FontSize="12" HorizontalAlignment="Left" Margin="22,214,0,0" TextWrapping="Wrap" Text="탐지범위(km)" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
+                <TextBlock x:Name="radarPos" FontSize="12" HorizontalAlignment="Left" Margin="127,196,0,0" TextWrapping="Wrap" Text="초기 좌표" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
+                <TextBlock x:Name="radarRange" FontSize="12" HorizontalAlignment="Left" Margin="127,214,0,0" TextWrapping="Wrap" Text="200" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
+
+                <!--공중위협-->
+                <Ellipse HorizontalAlignment="Left" Margin="10,239,0,0" Fill="LightGreen" VerticalAlignment="Top" Height="30" Width="30" RenderTransformOrigin="0.567,3.135"/>
+                <TextBlock FontSize="20" HorizontalAlignment="Left" Margin="48,239,0,0" TextWrapping="Wrap" Text="공중위협" VerticalAlignment="Top" Height="30" Width="92"/>
+                <TextBlock FontSize="12" HorizontalAlignment="Left" Margin="48,269,0,0" TextWrapping="Wrap" Text="좌표" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
+                <TextBlock FontSize="12" HorizontalAlignment="Left" Margin="48,287,0,0" TextWrapping="Wrap" Text="종류" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
+                <TextBlock FontSize="12" HorizontalAlignment="Left" Margin="35,308,0,0" TextWrapping="Wrap" Text="속도(마하)" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
+                <TextBlock x:Name="enemyPos" FontSize="12" HorizontalAlignment="Left" Margin="127,269,0,0" TextWrapping="Wrap" Text="초기 좌표" VerticalAlignment="Top" Height="18" Width="146" RenderTransformOrigin="-0.049,0.685"/>
+                <ComboBox x:Name="enemyItemsComboBox" HorizontalAlignment="Left" Margin="118,285,0,0" VerticalAlignment="Top" Width="110" Height="20">
+                    <ComboBoxItem Name ="Item1" Content="항공기"/>
+                    <ComboBoxItem Name ="Item2" Content="탄도탄"/>
+                </ComboBox>
+                <ComboBox x:Name="enemySpeedComboBox" HorizontalAlignment="Left" Margin="118,308,0,0" VerticalAlignment="Top" Width="110" Height="20" SelectionChanged="enemySpeedComboBox_SelectionChanged">
+                    <ComboBoxItem Name ="one" Content="1"/>
+                    <ComboBoxItem Name ="two" Content="2"/>
+                    <ComboBoxItem Name ="three" Content="3"/>
+                    <ComboBoxItem Name ="four" Content="4"/>
+                    <ComboBoxItem Name ="five" Content="5"/>
+                </ComboBox>
+
+
+
+
+
+            </Grid>
+            <!--2. 모의 시작, 배포, 중지 버튼-->
+            <Grid Grid.Column="1" Grid.Row="1">
+                <Button x:Name="btnScenDeploy" Content="모의 배포" Height="50" Margin="0,0,0,107"/>
+                <Button x:Name="btnScenStop" Content="모의 중지" Height="50" Margin="0,100,0,7"/>
+                <Button x:Name="btnScenStart" Content="모의 시작" Height="50" Margin="0,50,0,57"/>
+            </Grid>
+            <!--3. 이벤트 로그 레이아웃-->
+            <Grid Grid.Column="1" Grid.Row="2">
+                <Rectangle Fill="DarkGray" RadiusX="5" RadiusY="5"></Rectangle>
+            </Grid>
+        </Grid>
+
+
+
+
+
+        <!--스켈레톤 컴포넌트-->
+        <!--<ListBox x:Name="listBox" HorizontalAlignment="Left" Height="146" VerticalAlignment="Top" Width="208"/>
+        <Button x:Name="btnCreateObj" Content="Create" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Click="btnCreateObj_Click" Height="33"/>
+        <Button x:Name="btnSetHandle" Content="SetHandle" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="70" Click="btnSetHadle_Click" Height="33"/>
+        <Button x:Name="btnSendMsg" Content="SendMsg" HorizontalAlignment="Left" VerticalAlignment="Top" Width="86" Height="33" Click="btnSendMsg_Click"/>
+        <Button x:Name="btnDeleteObj" Content="Delete" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Height="33" Click="btnDeleteObj_Click"/>
+        <Button x:Name="btnPlugIn" Content="PlugIn" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="70" Click="btnPlugIn_Click" />
+        <Button x:Name="btnPlugOut" Content="PlugOut" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="70" Click="btnPlugOut_Click" RenderTransformOrigin="0.066,16.227"/>-->
 
     </Grid>
 </Window>
