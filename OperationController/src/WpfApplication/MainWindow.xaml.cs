@@ -35,6 +35,8 @@ namespace WpfApplication1
         //        Line line = new Line();
 
         //        line.Stroke = SystemColors.WindowFrameBrush;
+        //        line.StrokeThickness = 3;
+                
         //        line.X1 = currentPoint.X;
         //        line.Y1 = currentPoint.Y;
         //        line.X2 = e.GetPosition(this).X;
