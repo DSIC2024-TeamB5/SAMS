@@ -10,6 +10,11 @@
 # .vs
 .vs/
 
+# cs build output
+*.pdb
+*.binx64Debug
+*.csproj
+
 # Prerequisites
 *.d
 
