@@ -12,8 +12,8 @@
 
 # cs build output
 *.pdb
-*.binx64Debug
 *.csproj
+binx64Debug
 
 # Prerequisites
 *.d
