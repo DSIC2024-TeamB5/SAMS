@@ -7,6 +7,10 @@ using System.Windows.Interop;
 using System.Windows.Threading;
 using WpfApplication;
 using nframework.nom;
+using System.Windows.Input;
+using System.Threading.Tasks;
+using System.Windows.Shapes;
+
 
 namespace WpfApplication1
 {   /// <summary>
@@ -14,6 +18,13 @@ namespace WpfApplication1
     /// </summary>
     public partial class MainWindow : Window
     {
+        static class NativeMethods
+        {
+            [DllImport("kernel32.dll", SetLastError = true)]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            public static extern bool AllocConsole();
+        }
+
         [DllImport("GUIConnectord.dll", CallingConvention = CallingConvention.Cdecl)]
         extern public static IntPtr CreateGUIConn();
         [DllImport("GUIConnectord.dll", CallingConvention = CallingConvention.Cdecl)]
@@ -38,6 +49,7 @@ namespace WpfApplication1
         public MainWindow()
         {
             InitializeComponent();
+            NativeMethods.AllocConsole();
         }
 
         //윈도우 핸들 얻기
@@ -68,7 +80,7 @@ namespace WpfApplication1
                 Marshal.Copy(lParam, msgBuffer, 0, nomInfo.MsgLen);
 
                 nomInfo = (NOMInfo)Marshal.PtrToStructure(wParam, typeof(NOMInfo));
-                listBox.Items.Add(nomInfo.MsgName.ToString());
+                //listBox.Items.Add(nomInfo.MsgName.ToString());
             }
             else
             {
@@ -150,5 +162,94 @@ namespace WpfApplication1
         {
             DoPlugOut(GUIConnObj);
         }
+
+        private void enemySpeedComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+
+        }
+
+        static bool isSetLauncher = false;
+        static bool isSetRadar = false;
+        static bool isEnemyStart = false;
+        static bool isEnemyTarget = false;
+
+        private void Img_ClickTest_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Point ClickPos = e.GetPosition((IInputElement)sender);
+
+            float ClickX = (float)ClickPos.X;
+            float ClickY = (float)ClickPos.Y;
+
+            
+            if (!isSetLauncher && !isSetRadar && !isEnemyStart && !isEnemyTarget)
+            {
+                isSetLauncher = true;
+                /*
+                 * TODO
+                 * 
+                 * 1. 발사대 이미지 표시
+                 * 2. 발사대 초기 위치 설정
+                 * 3. 유도탄 초기 위치 설정
+                 * 
+                 * 설정되는 위치값은 모두 ScenarioDeploy 메시지와 모의기 상태창에 띄워져야 한다.
+                 * 
+                 */
+                Console.WriteLine("발사대 모의기 초기위치 : " + ClickX + " " + ClickY);
+                Console.WriteLine(">> 발사대 모의기 초기좌표 설정");
+                Console.WriteLine(">> 유도탄 모의기 초기좌표 설정");
+                Console.WriteLine("===================================");
+
+            }
+            else if (isSetLauncher && !isSetRadar && !isEnemyStart && !isEnemyTarget)
+            {
+                isSetRadar = true;
+                /*
+                 * TODO
+                 * 
+                 * 1. 레이다 이미지 표시
+                 * 2. 레이다 초기 위치 설정 
+                 *    (레이다 범위는 btnScnOk 을 누르면 전시)
+                 * 
+                 *  설정되는 위치값은 모두 ScenarioDeploy 메시지와 모의기 상태창에 띄워져야 한다.
+                 */
+                Console.WriteLine("레이다 모의기 초기위치 : " + ClickX + " " + ClickY);
+                Console.WriteLine(">> 레이다 모의기 초기좌표 설정");
+                Console.WriteLine("===================================");
+            }
+            else if (isSetLauncher && isSetRadar && !isEnemyStart && !isEnemyTarget)
+            {
+                isEnemyStart = true;
+                /*
+                 * TODO
+                 * 
+                 * 1. 공중위협 초기위치 표시
+                 * 2. 공중위협 초기위치 초기좌표 설정
+                 * 
+                 *  설정되는 위치값은 모두 ScenarioDeploy 메시지와 모의기 상태창에 띄워져야 한다.
+                 */
+                Console.WriteLine("공중위협 초기위치 : " + ClickX + " " + ClickY);
+                Console.WriteLine(">> 공중위협 초기위치 초기좌표 설정");
+                Console.WriteLine("===================================");
+            }
+            else if (isSetLauncher && isSetRadar && isEnemyStart && !isEnemyTarget)
+            {
+                isEnemyTarget = true;
+                /*
+                 * TODO
+                 * 
+                 * 1. 공중위협 타겟위치 표시
+                 * 2. 공중위협 초기위치와 타겟위치를 잇는 Line 그리기
+                 * 
+                 *  설정되는 위치값은 모두 ScenarioDeploy 메시지와 모의기 상태창에 띄워져야 한다.
+                 */
+                Console.WriteLine("공중위협 타겟위치 : " + ClickX + " " + ClickY);
+                Console.WriteLine(">> 공중위협 타겟위치 초기좌표 설정");
+                Console.WriteLine(">> 공중위협 초기 & 타겟위치 간 Line 생성");
+                Console.WriteLine("===================================");
+            }
+
+            //launcherImage.Margin = new System.Windows.Thickness { Left = ClickX, Top = ClickY };
+        }
+
     }
 }
