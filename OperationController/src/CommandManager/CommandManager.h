@@ -2,6 +2,7 @@
 #include <nFramework/BaseManager.h>
 #include <nFramework/mec/MECComponent.h>
 #include <nFramework/nom/NOMMain.h>
+#include <nFramework/nTimer/NTimer.h>
 
 using namespace nframework;
 using namespace nom;
@@ -33,6 +34,10 @@ private:
 	void init();
 	void release();
 
+    void sendPeriodically();
+	void startSimulation();
+    void stopSimulation();
+
 private:
 	IMEBComponent* meb;
 	MECComponent* mec;
@@ -42,5 +47,8 @@ private:
 
 	// you can change the code, if necessary
 	shared_ptr<NOM> ICD_TestNOM;
+    shared_ptr<NOM> simReqMsg;
+    NTimer *nTimer;
+    bool isRunning;
 };
 

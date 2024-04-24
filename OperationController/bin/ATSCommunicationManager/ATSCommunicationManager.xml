@@ -3,22 +3,22 @@
 	<!--  object data  -->
 	<NOM:objects>
 		<!--  packet data  -->
-		<NOM:object name="MSL_POSITION" id="1006" sharing="Neither" orderType="Receive" alignment="false">
-			<NOM:attribute name="MessageId" dataType="UnsignedIntegerBE"/>
-			<NOM:attribute name="MessageSize" dataType="UnsignedIntegerBE"/>
-			<NOM:attribute name="MissileCurX" dataType="FloatBE"/>
-			<NOM:attribute name="MissileCurY" dataType="FloatBE"/>
-			<NOM:attribute name="IsShotDown" dataType="UnsignedIntegerBE"/>
-		</NOM:object>
-		<NOM:object name="ATS_POSITION" id="1008" sharing="Publish" orderType="Receive" alignment="false">
-			<NOM:attribute name="MessageId" dataType="UnsignedIntegerBE"/>
-			<NOM:attribute name="MessageSize" dataType="UnsignedIntegerBE"/>
-			<NOM:attribute name="EnemyCurX" dataType="FloatBE"/>
-			<NOM:attribute name="EnemyCurY" dataType="FloatBE"/>
-		</NOM:object>
 	</NOM:objects>
 	<!--  interaction data  -->
 	<NOM:interactions>
+		<NOM:interaction name="MSL_POSITION" id="1006" sharing="Neither" orderType="Receive" alignment="false">
+			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
+			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
+			<NOM:parameter name="MissileCurX" dataType="FloatBE"/>
+			<NOM:parameter name="MissileCurY" dataType="FloatBE"/>
+			<NOM:parameter name="IsShotDown" dataType="UnsignedIntegerBE"/>
+		</NOM:interaction>
+		<NOM:interaction name="ATS_POSITION" id="1008" sharing="Publish" orderType="Receive" alignment="false">
+			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
+			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
+			<NOM:parameter name="EnemyCurX" dataType="FloatBE"/>
+			<NOM:parameter name="EnemyCurY" dataType="FloatBE"/>
+		</NOM:interaction>
 		<NOM:interaction name="SCN_DEPLOY" id="1001" sharing="Subscribe" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>

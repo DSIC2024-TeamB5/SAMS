@@ -43,6 +43,7 @@ namespace WpfApplication1
         //Window Message 사용자 정의
         public const Int32 WM_USER = 0x0400;
         public const Int32 WM_SEND_DATA = WM_USER + 0x01;
+        public const Int32 UM_ReceivedNOM = 0x004;
         public const Int32 UM_ReflectedNOM = WM_USER + 0x02;
         public static int recvCnt = 0;
 

@@ -84,10 +84,13 @@ void
 CommandManager::recvMsg(shared_ptr<NOM> nomMsg)
 {
 	// you can change the code below, if necessary
-	if (nomMsg->getName() == _T("GUI_Start"))
+	if (nomMsg->getName() == _T("MSL_LAUNCH"))
 	{
-		ICD_TestNOM->setValue(_T("Message1"), &NUInteger(7));
-		this->updateMsg(ICD_TestNOM);
+          if (!isRunning)
+		  {
+            isRunning = true;
+			this->startSimulation();
+		  }
 	}
 
 	// if need be, write your code
@@ -115,7 +118,13 @@ bool
 CommandManager::start()
 {
 	// you can change the code below, if necessary
-	//ICD_TestNOM = this->registerMsg(_T("ICD_Test1"));
+
+	nTimer = &NTimer::getInstance();
+    isRunning = false;
+    simReqMsg = meb->getNOMInstance(name, _T("SIM_CONTROL"));
+    simReqMsg->setValue(_T("MessageId"), &NUInteger(1002));
+    simReqMsg->setValue(_T("MessageSize"), &NUInteger(12));
+    simReqMsg->setValue(_T("OperationType"), &NUInteger(2));
 
 	return true;
 }
@@ -123,6 +132,7 @@ CommandManager::start()
 bool
 CommandManager::stop()
 {
+
 	this->deleteMsg(ICD_TestNOM);
 
 	return true;
@@ -133,6 +143,34 @@ CommandManager::setMEBComponent(IMEBComponent* realMEB)
 {
 	meb = realMEB;
 	mec->setMEB(meb);
+}
+
+/************************************************************************
+        message processor
+************************************************************************/
+void
+CommandManager::startSimulation() 
+{
+	// if need be, write your code
+	function<void(void *)> periodicFunc;
+    periodicFunc = std::bind(&CommandManager::sendPeriodically, this);
+	int timerHandle = 0;
+    timerHandle = nTimer->addPeriodicTask(1000, periodicFunc);
+}
+
+void 
+CommandManager::stopSimulation() 
+{
+	// if need be, write your code
+}
+
+
+void 
+CommandManager::sendPeriodically()
+{ 
+	
+    this->sendMsg(simReqMsg);
+	//tcout << _T("HELLO") << endl;
 }
 
 /************************************************************************
