@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Shapes;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Runtime.Remoting.Messaging;
 
 
 namespace WpfApplication1
@@ -72,9 +73,49 @@ namespace WpfApplication1
         //WndProc 함수 : C++로부터 수신한 NOM data 처리
         private IntPtr WndProc(IntPtr hwnd, Int32 msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (msg == WM_SEND_DATA)
+            if (msg == UM_ReceivedNOM)
             {
-                // if need be, write your code
+                // NOMInfo생성
+                NOMInfo nomInfo = new NOMInfo();
+                nomInfo = (NOMInfo)Marshal.PtrToStructure(wParam, typeof(NOMInfo));
+                string MessageName = nomInfo.MsgName.ToString();
+
+
+                // databuffer 입력
+                byte[] msgBuffer = new byte[nomInfo.MsgLen];
+                Marshal.Copy(lParam, msgBuffer, 0, nomInfo.MsgLen);
+
+                // NOM 객체에 파싱
+                NOMParser parser = new NOMParser();
+                parser.nomFilePath = "GUI_NOM.xml";
+                parser.parse();
+                
+                NMessage icdMsg = parser.getMessageObject(MessageName);
+    
+                NOM icdNOM = icdMsg.createNOMInstance();
+
+                icdNOM.deserialize(msgBuffer, nomInfo.MsgLen);
+
+                if (MessageName == "SIM_STATUS")
+                {
+                    //모의기 연결 상태 표시 함수 호출 
+
+                }
+                else if (MessageName == "ROS_DETECTION")
+                {
+                    //탐지 여부에 따라 발사가능 여부 조절 함수 호출
+                    //IsDetected : 1 = 탐지됨, 2 = 탐지 안됨
+                }
+                else if (MessageName == "MSL_POSITION")
+                { 
+                    //미사일 정보 갱신
+                    //IsShotDown : 1 = 격추안됨, 2 = 격추됨
+                    //격추된 경우 모의 중지 요청 송신
+                }
+                else if (MessageName == "ATS_POSITION")
+                {
+                    //공중위협 정보 갱신
+                }
             }
             else if (msg == UM_ReflectedNOM)
             {
@@ -95,6 +136,9 @@ namespace WpfApplication1
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // if need be, write your code
+            GUIConnObj = CreateGUIConn();
+            DoPlugIn(GUIConnObj);
+            SetHandle(GUIConnObj, GetWindowHandle(this));
         }
 
         /// <summary>
@@ -122,6 +166,7 @@ namespace WpfApplication1
         private void btnCreateObj_Click(object sender, RoutedEventArgs e)
         {
             GUIConnObj = CreateGUIConn();
+            
         }
         private void btnSetHadle_Click(object sender, RoutedEventArgs e)
         {
