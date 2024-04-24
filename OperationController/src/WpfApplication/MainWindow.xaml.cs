@@ -95,6 +95,9 @@ namespace WpfApplication1
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // if need be, write your code
+            GUIConnObj = CreateGUIConn();
+            DoPlugIn(GUIConnObj);
+            SetHandle(GUIConnObj, GetWindowHandle(this));
         }
 
         /// <summary>
@@ -292,11 +295,12 @@ namespace WpfApplication1
         // 발사대 필드
         static float s_launcherX = default;
         static float s_launcherY = default;
+        static uint s_missileStock = 4;
 
         // 미사일 필드
         static float s_missileX = default;
         static float s_missileY = default;
-        static float s_missileStock = 4;
+        static float s_missileSpeed = 5;
 
         // 레이다 필드
         static float s_radarX = default;
@@ -308,8 +312,52 @@ namespace WpfApplication1
         static float s_enemySy = default;
         static float s_enemyTx = default;
         static float s_enemyTy = default;
-        static int s_enemyType = default;
+        static uint s_enemyType = default;
         static int s_enemySpeed = default;
+
+        private void btnScnDeployClick(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(">> btnScnDeployClick() : ");
+            Console.WriteLine("===================================");
+
+            NOMParser parser = new NOMParser();
+            parser.nomFilePath = "GUI_NOM.xml";
+            parser.parse();
+
+            NMessage icdMsg = parser.getMessageObject("SCN_DEPLOY");
+            NOM startNOM = icdMsg.createNOMInstance();
+            startNOM.setValue("MessageId", new NUInteger(1001));
+            startNOM.setValue("MessageSize", new NUInteger(68));
+
+            startNOM.setValue("EnemyInitX", new NFloat(s_enemySx));
+            startNOM.setValue("EnemyInitY", new NFloat(s_enemySy));
+            startNOM.setValue("EnemyDestX", new NFloat(s_enemyTx));
+            startNOM.setValue("EnemyDestY", new NFloat(s_enemyTy));
+            startNOM.setValue("EnemySpeed", new NFloat(s_enemySpeed));
+            startNOM.setValue("EnemyType", new NUInteger(s_enemyType));
+            startNOM.setValue("EnemyAngle", new NFloat(0));
+            startNOM.setValue("MissileInitX", new NFloat(s_missileX));
+            startNOM.setValue("MissileInitY", new NFloat(s_missileY));
+            startNOM.setValue("MissileSpeed", new NFloat(s_missileSpeed));
+            startNOM.setValue("RadarInitX", new NFloat(s_radarX));
+            startNOM.setValue("RadarInitY", new NFloat(s_radarY));
+            startNOM.setValue("LauncherInitX", new NFloat(s_launcherX));
+            startNOM.setValue("LauncherInitY", new NFloat(s_launcherY));
+            startNOM.setValue("LauncherStock", new NUInteger(s_missileStock));
+
+            int byteSize = 0;
+            byte[] nomBytes = startNOM.serialize(out byteSize);
+
+            NOMInfo nomInfo = new NOMInfo();
+            nomInfo.MsgName = "SCN_DEPLOY";
+            nomInfo.MsgID = 1001;
+            nomInfo.MsgLen = byteSize;
+
+            IntPtr ptr = Marshal.AllocHGlobal(nomInfo.MsgLen);
+
+            Marshal.Copy(nomBytes, 0, ptr, nomInfo.MsgLen);
+            SendMsg(GUIConnObj, nomInfo, ptr);
+        }
 
         private void setLauncherPos(float x, float y)
         {
