@@ -386,14 +386,10 @@ namespace WpfApplication1
             Console.WriteLine("===================================");
         }
 
-        private void btnLaunchClick(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine(">> btnLaunchClick() : ");
-            Console.WriteLine("===================================");
-        }
-
         private void btnScnOkClick(object sender, RoutedEventArgs e)
         {
+            Console.WriteLine(">> btnScnOkClick() : ");
+            Console.WriteLine("===================================");
             /*
              * 아래 모든 필드가 채워져야만 ScenarioDeploy Message 에 담겨야함
              * 
@@ -410,17 +406,22 @@ namespace WpfApplication1
                 // 모두 값이 채워져 있으면 SCN_DEPLOY에 setValue.
                 // 여기서 SCN_DEPLOY 에 setValue
                 Console.WriteLine(">> 시나리오 배포 준비가 되었습니다. ");
-            } else
+
+                // 임의로 true로 한거임 지우셈 나중에
+                enemyDetected = true;
+                btnLaunch.IsEnabled = true;
+                // 임의로 true로 한거임 지우셈 나중에
+            }
+            else
             {
                 Console.WriteLine(">> 시나리오 배포가 불가능 합니다. 필드를 채워주세요. ");
             }
-
-            Console.WriteLine(">> btnScnOkClick() : ");
-            Console.WriteLine("===================================");
         }
 
         private void btnScnClearClick(object sender, RoutedEventArgs e)
         {
+            Console.WriteLine(">> btnScnClearClick() : ");
+            Console.WriteLine("===================================");
             // 발사대 필드
             s_launcherX = default;
             s_launcherY = default;
@@ -448,14 +449,21 @@ namespace WpfApplication1
             missilePos.Text = initText;
             radarPos.Text = initText;
             enemyPos.Text = initText;
-            // 이미지 visible hidden
+            
+            img_launcher.Visibility = Visibility.Hidden;
+            img_radar.Visibility = Visibility.Hidden;
+            img_enemyS.Visibility = Visibility.Hidden;
+            img_enemyT.Visibility = Visibility.Hidden;
+            // 공중위협 초기 - 타깃 사이 선 삭제, 각종 이미지 다시 추가
+            mapGrid.Children.Clear();
+            mapGrid.Children.Add(img_map);
+            mapGrid.Children.Add(img_launcher);
+            mapGrid.Children.Add(img_radar);
+            mapGrid.Children.Add(img_enemyS);
+            mapGrid.Children.Add(img_enemyT);
+            // 콤보박스 초기화
 
-            // 공중위협 초기 - 타깃 사이 선 삭제
-            //mapGrid.Children.Remove()
-
-
-            Console.WriteLine(">> btnScnClearClick() : ");
-            Console.WriteLine("===================================");
+            
         }
 
         private bool isAllCheckedStatus()
@@ -470,6 +478,28 @@ namespace WpfApplication1
 
             else return false;
         }
+
+        // 유도탄 로직
+        static bool enemyDetected = false;      // 탐지 여부
+        static bool isLaunched = false;         // 발사 여부
+        static bool isShotDown = false;         // 격추 여부
+
+        /* ROS_DETECTION 오면 enemyDetected 를 true로 변경 */
+        /* ROS_DETECTION 오면 btnLaunch 를 true로 변경 */
+
+        private void btnLaunchClick(object sender, RoutedEventArgs e)
+        {
+            
+
+            Console.WriteLine(">> btnLaunchClick() : ");
+            Console.WriteLine("===================================");
+
+            img_missile.Margin = new System.Windows.Thickness { Left = s_missileX, Top = s_missileY };
+            img_missile.Visibility = Visibility.Visible;
+            Console.WriteLine(">> s_missileX, s_missileY : " + s_missileX + ", " + s_missileY);
+        }
+
+        // 공중위협 로직
 
     }
 }
