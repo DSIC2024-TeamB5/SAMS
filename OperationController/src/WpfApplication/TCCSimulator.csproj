@@ -183,7 +183,22 @@
     <Resource Include="test.PNG" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="3_LauncherImage.png" />
+    <Resource Include="1_발사대.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="2_레이다.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="3_공중위협초기.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="4_공중위협타겟.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="5_공중위협객체.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="6_유도탄미사일.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
