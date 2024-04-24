@@ -84,13 +84,25 @@ void
 CommandManager::recvMsg(shared_ptr<NOM> nomMsg)
 {
 	// you can change the code below, if necessary
-	if (nomMsg->getName() == _T("MSL_LAUNCH"))
+	if (nomMsg->getName() == _T("SIM_CONTROL"))
 	{
-          if (!isRunning)
+          unsigned int OpType = nomMsg->getValue(_T("OperationType"))->toUInt();
+          if (OpType == static_cast<int>(OP_TYPE::START_SIM))
 		  {
-            isRunning = true;
-			this->startSimulation();
+				if (!isRunning)
+				{
+					isRunning = true;
+					this->startSimulation();
+				}
+		  } 
+		  else
+		  {
+				this->stopSimulation();
 		  }
+        } 
+	else if (nomMsg->getName() == _T("MSL_LAUNCH"))
+	{
+          missileLaunched = true;
 	}
 
 	// if need be, write your code
@@ -121,11 +133,15 @@ CommandManager::start()
 
 	nTimer = &NTimer::getInstance();
     isRunning = false;
-    simReqMsg = meb->getNOMInstance(name, _T("SIM_CONTROL"));
-    simReqMsg->setValue(_T("MessageId"), &NUInteger(1002));
-    simReqMsg->setValue(_T("MessageSize"), &NUInteger(12));
-    simReqMsg->setValue(_T("OperationType"), &NUInteger(2));
-
+    missileLaunched = false;
+    simReqMsgATS_ROS = meb->getNOMInstance(name, _T("SIM_CONTROL_ATS_ROS"));
+    simReqMsgATS_ROS->setValue(_T("MessageId"), &NUInteger(1002));
+    simReqMsgATS_ROS->setValue(_T("MessageSize"), &NUInteger(12));
+    simReqMsgATS_ROS->setValue(_T("OperationType"), &NUInteger(2));
+    simReqMsgMSL_LOS = meb->getNOMInstance(name, _T("SIM_CONTROL_MSL_LOS"));
+    simReqMsgMSL_LOS->setValue(_T("MessageId"), &NUInteger(1002));
+    simReqMsgMSL_LOS->setValue(_T("MessageSize"), &NUInteger(12));
+    simReqMsgMSL_LOS->setValue(_T("OperationType"), &NUInteger(2));
 	return true;
 }
 
@@ -154,7 +170,7 @@ CommandManager::startSimulation()
 	// if need be, write your code
 	function<void(void *)> periodicFunc;
     periodicFunc = std::bind(&CommandManager::sendPeriodically, this);
-	int timerHandle = 0;
+	timerHandle = 0;
     timerHandle = nTimer->addPeriodicTask(1000, periodicFunc);
 }
 
@@ -162,15 +178,18 @@ void
 CommandManager::stopSimulation() 
 {
 	// if need be, write your code
+	isRunning = false;
+    missileLaunched = false;
+	nTimer->removeTask(timerHandle);
 }
 
 
 void 
 CommandManager::sendPeriodically()
 { 
-	
-    this->sendMsg(simReqMsg);
-	//tcout << _T("HELLO") << endl;
+    this->sendMsg(simReqMsgATS_ROS);
+	if (!missileLaunched) return;
+	this->sendMsg(simReqMsgMSL_LOS);
 }
 
 /************************************************************************

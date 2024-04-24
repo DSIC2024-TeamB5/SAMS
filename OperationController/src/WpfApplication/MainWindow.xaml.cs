@@ -134,15 +134,18 @@ namespace WpfApplication1
             parser.nomFilePath = "GUI_NOM.xml";
             parser.parse();
 
-            NMessage icdMsg = parser.getMessageObject("MSL_LAUNCH");
+            NMessage icdMsg = parser.getMessageObject("SIM_CONTROL");
             NOM startNOM = icdMsg.createNOMInstance();
+            startNOM.setValue("MessageId", new NUInteger(1002));
+            startNOM.setValue("MessageSize", new NUInteger(12));
+            startNOM.setValue("OperationType", new NUInteger(1));
 
             int byteSize = 0;
             byte[] nomBytes = startNOM.serialize(out byteSize);
 
             NOMInfo nomInfo = new NOMInfo();
-            nomInfo.MsgName = "MSL_LAUNCH";
-            nomInfo.MsgID = 1005;
+            nomInfo.MsgName = "SIM_CONTROL";
+            nomInfo.MsgID = 1002;
             nomInfo.MsgLen = byteSize;
 
             IntPtr ptr = Marshal.AllocHGlobal(nomInfo.MsgLen);

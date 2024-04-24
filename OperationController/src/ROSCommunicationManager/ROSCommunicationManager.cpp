@@ -97,7 +97,7 @@ void
 UDPCommunicationManager::recvMsg(shared_ptr<NOM> nomMsg)
 {
 	// if need be, write your code
-	tcout << this->getUserName() << _T("::GUI_Start recv ----> sent through UDP") << endl;
+	tcout << this->getUserName() << _T(":: recv ----> sent through UDP") << endl;
 	commInterface->sendCommMsg(nomMsg);
 }
 

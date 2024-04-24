@@ -128,14 +128,14 @@
 
 
 
-        <!--스켈레톤 컴포넌트
+        <!--스켈레톤 컴포넌트-->
         <ListBox x:Name="listBox" HorizontalAlignment="Left" Height="146" VerticalAlignment="Top" Width="208"/>
-        <Button x:Name="btnCreateObj" Content="Create" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Click="btnCreateObj_Click" Height="33"/>
-        <Button x:Name="btnSetHandle" Content="SetHandle" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="70" Click="btnSetHadle_Click" Height="33"/>
-        <Button x:Name="btnSendMsg" Content="SendMsg" HorizontalAlignment="Left" VerticalAlignment="Top" Width="86" Height="33" Click="btnSendMsg_Click"/>
-        <Button x:Name="btnDeleteObj" Content="Delete" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Height="33" Click="btnDeleteObj_Click"/>
-        <Button x:Name="btnPlugIn" Content="PlugIn" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="70" Click="btnPlugIn_Click" />
-        <Button x:Name="btnPlugOut" Content="PlugOut" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="70" Click="btnPlugOut_Click" RenderTransformOrigin="0.066,16.227"/>-->
+        <Button x:Name="btnCreateObj" Content="Create" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Click="btnCreateObj_Click" Height="33" Margin="0,8,0,0"/>
+        <Button x:Name="btnSetHandle" Content="SetHandle" HorizontalAlignment="Left"  VerticalAlignment="Top" Width="70" Click="btnSetHadle_Click" Height="33" Margin="0,94,0,0"/>
+        <Button x:Name="btnSendMsg" Content="SendMsg" HorizontalAlignment="Left" VerticalAlignment="Top" Width="86" Height="33" Click="btnSendMsg_Click" Margin="104,51,0,0"/>
+        <Button x:Name="btnDeleteObj" Content="Delete" HorizontalAlignment="Left" VerticalAlignment="Top" Width="70" Height="33" Click="btnDeleteObj_Click" Margin="122,13,0,0"/>
+        <Button x:Name="btnPlugIn" Content="PlugIn" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="70" Click="btnPlugIn_Click" Margin="0,51,0,0" />
+        <Button x:Name="btnPlugOut" Content="PlugOut" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="70" Click="btnPlugOut_Click" RenderTransformOrigin="0.066,16.227" Margin="122,97,0,0"/>
 
     </Grid>
 </Window>

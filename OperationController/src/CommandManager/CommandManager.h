@@ -47,8 +47,16 @@ private:
 
 	// you can change the code, if necessary
 	shared_ptr<NOM> ICD_TestNOM;
-    shared_ptr<NOM> simReqMsg;
+    shared_ptr<NOM> simReqMsgATS_ROS;
+    shared_ptr<NOM> simReqMsgMSL_LOS;
     NTimer *nTimer;
+    int timerHandle;
     bool isRunning;
+    bool missileLaunched;
+
+
+	enum class OP_TYPE { START_SIM = 1, STOP_SIM };
 };
+
+
 

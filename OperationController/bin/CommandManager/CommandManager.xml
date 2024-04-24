@@ -38,7 +38,17 @@
 			<NOM:parameter name="LauncherInitY" dataType="FloatBE"/>
 			<NOM:parameter name="LauncherStock" dataType="UnsignedIntegerBE"/>
 		</NOM:interaction>
-		<NOM:interaction name="SIM_CONTROL" id="1002" sharing="PublishSubscribe" orderType="Receive" alignment="false">
+		<NOM:interaction name="SIM_CONTROL" id="1002" sharing="Subscribe" orderType="Receive" alignment="false">
+			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
+			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
+			<NOM:parameter name="OperationType" dataType="UnsignedIntegerBE"/>
+		</NOM:interaction>
+		<NOM:interaction name="SIM_CONTROL_ATS_ROS" id="2002" sharing="Publish" orderType="Receive" alignment="false">
+			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
+			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
+			<NOM:parameter name="OperationType" dataType="UnsignedIntegerBE"/>
+		</NOM:interaction>
+		<NOM:interaction name="SIM_CONTROL_MSL_LOS" id="3002" sharing="Publish" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="OperationType" dataType="UnsignedIntegerBE"/>
