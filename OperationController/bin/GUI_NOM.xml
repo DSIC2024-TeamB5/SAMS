@@ -33,12 +33,25 @@
             <NOM:attribute name="fieldUshort" dataType="ushortBE" />
             <NOM:attribute name="varDatum" dataType="var" />
         </NOM:object>
-      <NOM:object name="ICD_Test1" id="111" nameNotes="ICD의 Test1 메시지" sharing="PublishSubscribe" orderType="Receive" alignment="false">
+        <NOM:object name="ICD_Test1" id="111" nameNotes="ICD의 Test1 메시지" sharing="PublishSubscribe" orderType="Receive" alignment="false">
         <NOM:attribute name="SystemTime1" nameNotes="Logging Time - sec"  dataType="uintBE"/>
         <NOM:attribute name="SystemTime2" nameNotes="Logging Time - millisec"  dataType="uintBE"/>
         <NOM:attribute name="Message1" nameNotes="수신 메시지 1" dataType="uintBE"/>
         <NOM:attribute name="Message2" nameNotes="수신 메시지 2" dataType="uintBE"/>
-      </NOM:object>
+        </NOM:object>
+		<NOM:object name="MSL_POSITION" id="1006" sharing="Neither" orderType="Receive" alignment="false">
+			<NOM:attribute name="MessageId" dataType="uintBE"/>
+			<NOM:attribute name="MessageSize" dataType="uintBE"/>
+			<NOM:attribute name="MissileCurX" dataType="floatBE"/>
+			<NOM:attribute name="MissileCurY" dataType="floatBE"/>
+			<NOM:attribute name="IsShotDown" dataType="uintBE"/>
+		</NOM:object>
+		<NOM:object name="ATS_POSITION" id="1008" sharing="Subscribe" orderType="Receive" alignment="false">
+			<NOM:attribute name="MessageId" dataType="uintBE"/>
+			<NOM:attribute name="MessageSize" dataType="uintBE"/>
+			<NOM:attribute name="EnemyCurX" dataType="floatBE"/>
+			<NOM:attribute name="EnemyCurY" dataType="floatBE"/>
+		</NOM:object>
 		<!--
         <NOM:object name="Port.camodel.in_GUI_211" id="211" sharing="Subscribe" orderType="Receive" alignment="false">
 
@@ -187,9 +200,51 @@
             <NOM:parameter name="fixedTest" fixedLength="10" dataType="fstring" />
             <NOM:parameter name="fixedDatum" fixedLength="20" dataType="fdatum" />
         </NOM:interaction>
-        <NOM:interaction name="GUI_Start" id="1001" nameNotes="시작" sharing="Publish" orderType="Receive" alignment="false">
+        <NOM:interaction name="GUI_Start" id="7001" nameNotes="시작" sharing="Publish" orderType="Receive" alignment="false">
           <NOM:parameter name="Message1" dataType="uintBE" />
         </NOM:interaction>
+		<NOM:interaction name="SCN_DEPLOY" id="1001" sharing="Publish" orderType="Receive" alignment="false">
+			<NOM:parameter name="MessageId" dataType="uintBE"/>
+			<NOM:parameter name="MessageSize" dataType="uintBE"/>
+			<NOM:parameter name="EnemyInitX" dataType="floatBE"/>
+			<NOM:parameter name="EnemyInitY" dataType="floatBE"/>
+			<NOM:parameter name="EnemyDestX" dataType="floatBE"/>
+			<NOM:parameter name="EnemyDestY" dataType="floatBE"/>
+			<NOM:parameter name="EnemySpeed" dataType="floatBE"/>
+			<NOM:parameter name="EnemyType" dataType="uintBE"/>
+			<NOM:parameter name="EnemyAngle" dataType="floatBE"/>
+			<NOM:parameter name="MissileInitX" dataType="floatBE"/>
+			<NOM:parameter name="MissileInitY" dataType="floatBE"/>
+			<NOM:parameter name="MissileSpeed" dataType="floatBE"/>
+			<NOM:parameter name="RadarInitX" dataType="floatBE"/>
+			<NOM:parameter name="RadarInitY" dataType="floatBE"/>
+			<NOM:parameter name="LauncherInitX" dataType="floatBE"/>
+			<NOM:parameter name="LauncherInitY" dataType="floatBE"/>
+			<NOM:parameter name="LauncherStock" dataType="uintBE"/>
+		</NOM:interaction>
+		<NOM:interaction name="SIM_CONTROL" id="1002" sharing="Publish" orderType="Receive" alignment="false">
+			<NOM:parameter name="MessageId" dataType="uintBE"/>
+			<NOM:parameter name="MessageSize" dataType="uintBE"/>
+			<NOM:parameter name="OperationType" dataType="uintBE"/>
+		</NOM:interaction>
+		<NOM:interaction name="SIM_STATUS" id="1003" sharing="Subscribe" orderType="Receive" alignment="false">
+			<NOM:parameter name="MessageId" dataType="uintBE"/>
+			<NOM:parameter name="MessageSize" dataType="uintBE"/>
+			<NOM:parameter name="SimulatorState" dataType="uintBE"/>
+		</NOM:interaction>
+		<NOM:interaction name="ROS_DETECTION" id="1004" sharing="Neither" orderType="Receive" alignment="false">
+			<NOM:parameter name="MessageId" dataType="uintBE"/>
+			<NOM:parameter name="MessageSize" dataType="uintBE"/>
+			<NOM:parameter name="IsDetected" dataType="uintBE"/>
+		</NOM:interaction>
+		<NOM:interaction name="MSL_LAUNCH" id="1005" sharing="PublishSubscribe" orderType="Receive" alignment="false">
+			<NOM:parameter name="MessageId" dataType="uintBE"/>
+			<NOM:parameter name="MessageSize" dataType="uintBE"/>
+		</NOM:interaction>
+		<NOM:interaction name="ATS_SHOT_DOWN" id="1007" sharing="Publish" orderType="Receive" alignment="false">
+			<NOM:parameter name="MessageId" dataType="uintBE"/>
+			<NOM:parameter name="MessageSize" dataType="uintBE"/>
+		</NOM:interaction>
     </NOM:interactions>
     <NOM:dataTypes>
         <NOM:basicTypes>

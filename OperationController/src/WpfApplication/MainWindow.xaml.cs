@@ -9,8 +9,7 @@ using WpfApplication;
 using nframework.nom;
 
 namespace WpfApplication1
-{
-    /// <summary>
+{   /// <summary>
     /// MainWindow.xaml에 대한 상호 작용 논리
     /// </summary>
     public partial class MainWindow : Window
@@ -120,16 +119,16 @@ namespace WpfApplication1
             parser.nomFilePath = "GUI_NOM.xml";
             parser.parse();
 
-            NMessage icdMsg = parser.getMessageObject("GUI_Start");
+            NMessage icdMsg = parser.getMessageObject("MSL_LAUNCH");
             NOM startNOM = icdMsg.createNOMInstance();
 
             int byteSize = 0;
             byte[] nomBytes = startNOM.serialize(out byteSize);
 
             NOMInfo nomInfo = new NOMInfo();
-            nomInfo.MsgName = "GUI_Start";
-            nomInfo.MsgID = 1001;
-            nomInfo.MsgLen = (int)startNOM.length;
+            nomInfo.MsgName = "MSL_LAUNCH";
+            nomInfo.MsgID = 1005;
+            nomInfo.MsgLen = byteSize;
 
             IntPtr ptr = Marshal.AllocHGlobal(nomInfo.MsgLen);
 
