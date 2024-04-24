@@ -38,7 +38,7 @@
 			<NOM:parameter name="LauncherInitY" dataType="FloatBE"/>
 			<NOM:parameter name="LauncherStock" dataType="UnsignedIntegerBE"/>
 		</NOM:interaction>
-		<NOM:interaction name="SIM_CONTROL_ATS_ROS" id="2002" sharing="Subscribe" orderType="Receive" alignment="false">
+		<NOM:interaction name="SIM_CONTROL_ATS_ROS" id="2002" sharing="Neither" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="OperationType" dataType="UnsignedIntegerBE"/>

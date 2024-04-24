@@ -188,8 +188,8 @@ void
 CommandManager::sendPeriodically()
 { 
     this->sendMsg(simReqMsgATS_ROS);
-	if (!missileLaunched) return;
-	this->sendMsg(simReqMsgMSL_LOS);
+	/*if (!missileLaunched) return;
+	this->sendMsg(simReqMsgMSL_LOS);*/
 }
 
 /************************************************************************
