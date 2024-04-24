@@ -1,53 +1,35 @@
 #include "CommMessageHandler.h"
 
 /************************************************************************
-	initialize / release
+        initialize / release
 ************************************************************************/
-CommMessageHandler::CommMessageHandler()
-{
-	initialize();
+CommMessageHandler::CommMessageHandler() { initialize(); }
+
+CommMessageHandler::~CommMessageHandler() { release(); }
+
+void CommMessageHandler::initialize() {
+  // if need be, write your code
+  setIDNameTable(1001, _T("SCN_DEPLOY"));
+  setIDNameTable(1002, _T("SIM_CONTROL"));
+  setIDNameTable(1008, _T("ATS_POSITION"));
 }
 
-CommMessageHandler::~CommMessageHandler()
-{
-	release();
-}
-
-void
-CommMessageHandler::initialize()
-{
-	// if need be, write your code
-	setIDNameTable(100, _T("MessageName"));
-	setIDNameTable(1001, _T("ScenarioDeploy"));
-}
-
-void
-CommMessageHandler::release()
-{
-	IDNameTable.clear();
-}
+void CommMessageHandler::release() { IDNameTable.clear(); }
 
 /************************************************************************
-	ID_Name table management
+        ID_Name table management
 ************************************************************************/
-void
-CommMessageHandler::setIDNameTable(unsigned short msgID, tstring msgName)
-{
-	IDNameTable.insert(pair<unsigned short, tstring>(msgID, msgName));
+void CommMessageHandler::setIDNameTable(unsigned short msgID, tstring msgName) {
+  IDNameTable.insert(pair<unsigned short, tstring>(msgID, msgName));
 }
 
-tstring
-CommMessageHandler::getMsgName(unsigned short msgID)
-{
-	tstring msgName;
-	if (auto itr = IDNameTable.find(msgID); itr != IDNameTable.end())
-	{
-		msgName = itr->second;
-	}
-	else
-	{
-		msgName = _T("");
-	}
+tstring CommMessageHandler::getMsgName(unsigned short msgID) {
+  tstring msgName;
+  if (auto itr = IDNameTable.find(msgID); itr != IDNameTable.end()) {
+    msgName = itr->second;
+  } else {
+    msgName = _T("");
+  }
 
-	return msgName;
+  return msgName;
 }
