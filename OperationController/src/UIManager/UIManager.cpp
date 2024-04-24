@@ -100,6 +100,10 @@ void
 UIManager::sendMsg(shared_ptr<NOM> nomMsg)
 {
 	// if need be, write your code
+	if (nomMsg->getName() == _T("MSL_LAUNCH")) {
+          nomMsg->setValue(_T("MessageId"), &NUInteger(1005));
+          nomMsg->setValue(_T("MessageSize"), &NUInteger(8));
+	}
 	mec->sendMsg(nomMsg);
 }
 

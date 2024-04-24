@@ -115,7 +115,7 @@ bool
 CommandManager::start()
 {
 	// you can change the code below, if necessary
-	ICD_TestNOM = this->registerMsg(_T("ICD_Test1"));
+	//ICD_TestNOM = this->registerMsg(_T("ICD_Test1"));
 
 	return true;
 }
