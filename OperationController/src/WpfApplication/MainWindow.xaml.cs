@@ -10,6 +10,8 @@ using nframework.nom;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Windows.Shapes;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 
 namespace WpfApplication1
@@ -164,27 +166,28 @@ namespace WpfApplication1
             DoPlugOut(GUIConnObj);
         }
 
-        private void enemySpeedComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-
-        }
-
+        // Display 관련
         static bool isSetLauncher = false;
         static bool isSetRadar = false;
         static bool isEnemyStart = false;
         static bool isEnemyTarget = false;
 
-        private void Img_ClickTest_MouseDown(object sender, MouseButtonEventArgs e)
+        private void setPosAndMessage(object sender, MouseButtonEventArgs e)
         {
             Point ClickPos = e.GetPosition((IInputElement)sender);
 
-            float ClickX = (float)ClickPos.X;
-            float ClickY = (float)ClickPos.Y;
+            // ScnDeployMsg에 저장할 실제 좌표
+            float realX = (float)ClickPos.X;
+            float realY = (float)ClickPos.Y;
 
-            
             if (!isSetLauncher && !isSetRadar && !isEnemyStart && !isEnemyTarget)
             {
                 isSetLauncher = true;
+
+                // 각 이미지들이 Map에 찍힐 보정좌표
+                float displayX = realX - 13;
+                float displayY = realY - 13;
+
                 /*
                  * TODO
                  * 
@@ -195,7 +198,12 @@ namespace WpfApplication1
                  * 설정되는 위치값은 모두 ScenarioDeploy 메시지와 모의기 상태창에 띄워져야 한다.
                  * 
                  */
-                Console.WriteLine("발사대 모의기 초기위치 : " + ClickX + " " + ClickY);
+                img_launcher.Margin = new System.Windows.Thickness { Left = displayX, Top = displayY };
+                img_launcher.Visibility = Visibility.Visible;
+
+                setLauncherPos(realX, realY);
+
+                Console.WriteLine("발사대 모의기 초기위치 : " + realX + " " + realY);
                 Console.WriteLine(">> 발사대 모의기 초기좌표 설정");
                 Console.WriteLine(">> 유도탄 모의기 초기좌표 설정");
                 Console.WriteLine("===================================");
@@ -204,6 +212,10 @@ namespace WpfApplication1
             else if (isSetLauncher && !isSetRadar && !isEnemyStart && !isEnemyTarget)
             {
                 isSetRadar = true;
+
+                // 각 이미지들이 Map에 찍히고 ScnDeployMsg에 저장할 보정좌표
+                float displayX = realX - 13;
+                float displayY = realY - 13;
                 /*
                  * TODO
                  * 
@@ -213,13 +225,21 @@ namespace WpfApplication1
                  * 
                  *  설정되는 위치값은 모두 ScenarioDeploy 메시지와 모의기 상태창에 띄워져야 한다.
                  */
-                Console.WriteLine("레이다 모의기 초기위치 : " + ClickX + " " + ClickY);
+                img_radar.Margin = new System.Windows.Thickness { Left = displayX, Top = displayY };
+                img_radar.Visibility = Visibility.Visible;
+
+                setRadarPos(realX, realY);
+                Console.WriteLine("레이다 모의기 초기위치 : " + realX + " " + realY);
                 Console.WriteLine(">> 레이다 모의기 초기좌표 설정");
                 Console.WriteLine("===================================");
             }
             else if (isSetLauncher && isSetRadar && !isEnemyStart && !isEnemyTarget)
             {
                 isEnemyStart = true;
+
+                // 각 이미지들이 Map에 찍히고 ScnDeployMsg에 저장할 보정좌표
+                float displayX = realX - 17;
+                float displayY = realY - 13;
                 /*
                  * TODO
                  * 
@@ -228,13 +248,20 @@ namespace WpfApplication1
                  * 
                  *  설정되는 위치값은 모두 ScenarioDeploy 메시지와 모의기 상태창에 띄워져야 한다.
                  */
-                Console.WriteLine("공중위협 초기위치 : " + ClickX + " " + ClickY);
+                img_enemyS.Margin = new System.Windows.Thickness { Left = displayX, Top = displayY };
+                img_enemyS.Visibility = Visibility.Visible;
+                setEnemyStartPos(realX, realY);
+                Console.WriteLine("공중위협 초기위치 : " + realX + " " + realY);
                 Console.WriteLine(">> 공중위협 초기위치 초기좌표 설정");
                 Console.WriteLine("===================================");
             }
             else if (isSetLauncher && isSetRadar && isEnemyStart && !isEnemyTarget)
             {
                 isEnemyTarget = true;
+
+                // 각 이미지들이 Map에 찍히고 ScnDeployMsg에 저장할 보정좌표
+                float displayX = realX - 17;
+                float displayY = realY - 13;
                 /*
                  * TODO
                  * 
@@ -243,14 +270,237 @@ namespace WpfApplication1
                  * 
                  *  설정되는 위치값은 모두 ScenarioDeploy 메시지와 모의기 상태창에 띄워져야 한다.
                  */
-                Console.WriteLine("공중위협 타겟위치 : " + ClickX + " " + ClickY);
+                img_enemyT.Margin = new System.Windows.Thickness { Left = displayX, Top = displayY };
+                img_enemyT.Visibility = Visibility.Visible;
+                setEnemyTargetPos(realX, realY);
+                drawLineStartToTarget();
+
+                Console.WriteLine("공중위협 타겟위치 : " + realX + " " + realY);
                 Console.WriteLine(">> 공중위협 타겟위치 초기좌표 설정");
                 Console.WriteLine(">> 공중위협 초기 & 타겟위치 간 Line 생성");
                 Console.WriteLine("===================================");
             }
-
-            //launcherImage.Margin = new System.Windows.Thickness { Left = ClickX, Top = ClickY };
         }
+
+        // 초기 좌표 string 변수
+        static string initText = "초기 좌표";
+
+        // ScenarioDeploy Message 에 담을 필드
+        // 발사대 필드
+        static float s_launcherX = default;
+        static float s_launcherY = default;
+
+        // 미사일 필드
+        static float s_missileX = default;
+        static float s_missileY = default;
+        static float s_missileStock = 4;
+
+        // 레이다 필드
+        static float s_radarX = default;
+        static float s_radarY = default;
+        public const int s_radarRange = 200;    
+
+        // 공중위협 필드
+        static float s_enemySx = default;
+        static float s_enemySy = default;
+        static float s_enemyTx = default;
+        static float s_enemyTy = default;
+        static int s_enemyType = default;
+        static int s_enemySpeed = default;
+
+        private void setLauncherPos(float x, float y)
+        {
+            launcherPos.Text = x + ", " + y;
+            
+            s_launcherX = x;
+            s_launcherY = y;
+
+            setMissilePos(x, y);
+        }
+        private void setMissilePos(float x, float y)
+        {
+            missilePos.Text = x + ", " + y;
+            s_missileX = x;
+            s_missileY = y;
+        }
+        private void setRadarPos(float x, float y)
+        {
+            radarPos.Text = x + ", " + y;
+
+            s_radarX = x;
+            s_radarY = y;
+        }
+        private void setEnemyStartPos(float x, float y)
+        {
+            enemyPos.Text = x + ", " + y;
+            s_enemySx = x;
+            s_enemySy = y;
+        }
+        private void setEnemyTargetPos(float x, float y)
+        {
+            s_enemyTx = x;
+            s_enemyTy = y;
+        }
+
+        private void drawLineStartToTarget() 
+        {
+            Line line = createLine(s_enemySx, s_enemySy, s_enemyTx, s_enemyTy, Brushes.Red, 2, null);
+
+            mapGrid.Children.Add(line);
+        }
+        private Line createLine(float x1, float y1, float x2, float y2, Brush brush, double thickness, DoubleCollection dashStyle)
+        {
+            Line line = new Line();
+
+            line.X1 = x1;
+            line.Y1 = y1;
+            line.X2 = x2;
+            line.Y2 = y2;
+
+            line.Stroke = brush;
+            line.StrokeThickness = thickness;
+            line.StrokeDashArray = dashStyle;
+
+            return line;
+        }
+        // 공중위협 종류 comboBox
+        private void enemyItemsComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = enemyItemsComboBox;
+            string text = (comboBox.SelectedItem as ComboBoxItem).Content.ToString();
+
+            if (text == "항공기") s_enemyType = 1;
+            else s_enemyType = 2;
+
+            Console.WriteLine(">> 공중위협 선택 : " + text);
+            Console.WriteLine("===================================");
+        }
+        // 공중위협 속도 comboBox
+        private void enemySpeedComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ComboBox comboBox = enemySpeedComboBox;
+            string text = (comboBox.SelectedItem as ComboBoxItem).Content.ToString();
+            int speed = int.Parse(text);
+            s_enemySpeed = speed;
+
+            Console.WriteLine(">> 공중위협 속도 : " + text);
+            Console.WriteLine("===================================");
+        }
+
+        private void btnScnOkClick(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(">> btnScnOkClick() : ");
+            Console.WriteLine("===================================");
+            /*
+             * 아래 모든 필드가 채워져야만 ScenarioDeploy Message 에 담겨야함
+             * 
+             * 공중위협 초기좌표(x,y)
+             * 공중위협 목적좌표(x,y)
+             * 공중위협 속력, 유형
+             * 유도탄 초기좌표(x, y)
+             * 레이다 초기좌표(x, y)
+             * 발사대 초기좌표(x, y)
+             * 
+             */
+            if (isAllCheckedStatus())
+            {
+                // 모두 값이 채워져 있으면 SCN_DEPLOY에 setValue.
+                // 여기서 SCN_DEPLOY 에 setValue
+                Console.WriteLine(">> 시나리오 배포 준비가 되었습니다. ");
+
+                // 임의로 true로 한거임 지우셈 나중에
+                enemyDetected = true;
+                btnLaunch.IsEnabled = true;
+                // 임의로 true로 한거임 지우셈 나중에
+            }
+            else
+            {
+                Console.WriteLine(">> 시나리오 배포가 불가능 합니다. 필드를 채워주세요. ");
+            }
+        }
+
+        private void btnScnClearClick(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(">> btnScnClearClick() : ");
+            Console.WriteLine("===================================");
+            // 발사대 필드
+            s_launcherX = default;
+            s_launcherY = default;
+            // 미사일 필드
+            s_missileX = default;
+            s_missileY = default;
+            s_missileStock = 4;
+            // 레이다 필드
+            s_radarX = default;
+            s_radarY = default;
+            // 공중위협 필드
+            s_enemySx = default;
+            s_enemySy = default;
+            s_enemyTx = default;
+            s_enemyTy = default;
+            s_enemyType = default;
+            s_enemySpeed = default;
+            // Display 관련
+            isSetLauncher = false;
+            isSetRadar = false;
+            isEnemyStart = false;
+            isEnemyTarget = false;
+            // 상태창 좌표 초기화
+            launcherPos.Text = initText;
+            missilePos.Text = initText;
+            radarPos.Text = initText;
+            enemyPos.Text = initText;
+            
+            img_launcher.Visibility = Visibility.Hidden;
+            img_radar.Visibility = Visibility.Hidden;
+            img_enemyS.Visibility = Visibility.Hidden;
+            img_enemyT.Visibility = Visibility.Hidden;
+            // 공중위협 초기 - 타깃 사이 선 삭제, 각종 이미지 다시 추가
+            mapGrid.Children.Clear();
+            mapGrid.Children.Add(img_map);
+            mapGrid.Children.Add(img_launcher);
+            mapGrid.Children.Add(img_radar);
+            mapGrid.Children.Add(img_enemyS);
+            mapGrid.Children.Add(img_enemyT);
+            // 콤보박스 초기화
+
+            
+        }
+
+        private bool isAllCheckedStatus()
+        {
+            if (s_enemySx != default && s_enemySy != default &&
+                s_enemyTx != default&& s_enemyTy != default &&
+                s_enemySpeed != default &&
+                s_enemyType != default &&
+                s_missileX != default && s_missileY != default &&
+                s_radarX != default && s_radarY != default &&
+                s_launcherX != default && s_launcherY != default) return true;
+
+            else return false;
+        }
+
+        // 유도탄 로직
+        static bool enemyDetected = false;      // 탐지 여부
+        static bool isLaunched = false;         // 발사 여부
+        static bool isShotDown = false;         // 격추 여부
+
+        /* ROS_DETECTION 오면 enemyDetected 를 true로 변경 */
+        /* ROS_DETECTION 오면 btnLaunch 를 true로 변경 */
+
+        private void btnLaunchClick(object sender, RoutedEventArgs e)
+        {
+            
+
+            Console.WriteLine(">> btnLaunchClick() : ");
+            Console.WriteLine("===================================");
+
+            img_missile.Margin = new System.Windows.Thickness { Left = s_missileX, Top = s_missileY };
+            img_missile.Visibility = Visibility.Visible;
+            Console.WriteLine(">> s_missileX, s_missileY : " + s_missileX + ", " + s_missileY);
+        }
+
+        // 공중위협 로직
 
     }
 }
