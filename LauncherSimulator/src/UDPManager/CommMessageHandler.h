@@ -4,16 +4,16 @@
 
 class CommMessageHandler {
 public:
-  CommMessageHandler();
-  ~CommMessageHandler();
+	CommMessageHandler();
+	~CommMessageHandler();
 
-  tstring getMsgName(unsigned int msgID);
-
-private:
-  void initialize();
-  void release();
-  void setIDNameTable(unsigned int msgID, tstring msgName);
+	tstring getMsgName(unsigned int msgID);
 
 private:
-  map<unsigned int, tstring> IDNameTable;
+	void initialize();
+	void release();
+	void setIDNameTable(unsigned int msgID, tstring msgName);
+
+private:
+	map<unsigned int, tstring> IDNameTable;
 };

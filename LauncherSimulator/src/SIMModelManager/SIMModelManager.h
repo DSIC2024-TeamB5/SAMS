@@ -8,8 +8,7 @@
 using namespace nframework;
 using namespace nom;
 
-class BASEMGRDLL_API SIMModelManager : public BaseManager
-{
+class BASEMGRDLL_API SIMModelManager : public BaseManager {
 public:
   SIMModelManager(void);
   ~SIMModelManager(void);
@@ -54,4 +53,3 @@ private:
   SIMModel* mLauncher;
   SharedData* mData;
 };
-

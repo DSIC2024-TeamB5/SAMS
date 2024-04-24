@@ -96,7 +96,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\SIMModelManager\SIMModel.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>

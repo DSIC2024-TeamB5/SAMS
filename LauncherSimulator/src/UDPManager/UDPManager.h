@@ -1,7 +1,6 @@
 #pragma once
 #include <nFramework/mec/MECComponent.h>
 #include <nFramework/comm/NCommInterface.h>
-#include <nFramework/nom/NOMMain.h>
 #include "CommMessageHandler.h"
 
 class BASEMGRDLL_API UDPManager : public BaseManager
