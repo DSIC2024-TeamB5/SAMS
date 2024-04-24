@@ -1,24 +1,11 @@
 <?xml version="1.0" encoding="EUC-KR"?>
 <NOM:Nex1ObjectModel xmlns:NOM="lignex1.sw.nframework.NOM" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="lignex1.sw.nframework.NOM NOM.xsd" version="0.1" name="ATSCommunicationManager" date="2021-02-09" author="Junyong Shim, LIGNex1">
-	<!--  object data  -->
+		<!--  object data  -->
 	<NOM:objects>
 		<!--  packet data  -->
-		<NOM:object name="MSL_POSITION" id="1006" sharing="Neither" orderType="Receive" alignment="false">
-			<NOM:attribute name="MessageId" dataType="UnsignedIntegerBE"/>
-			<NOM:attribute name="MessageSize" dataType="UnsignedIntegerBE"/>
-			<NOM:attribute name="MissileCurX" dataType="FloatBE"/>
-			<NOM:attribute name="MissileCurY" dataType="FloatBE"/>
-			<NOM:attribute name="IsShotDown" dataType="UnsignedIntegerBE"/>
-		</NOM:object>
-		<NOM:object name="ATS_POSITION" id="1008" sharing="Neither" orderType="Receive" alignment="false">
-			<NOM:attribute name="MessageId" dataType="UnsignedIntegerBE"/>
-			<NOM:attribute name="MessageSize" dataType="UnsignedIntegerBE"/>
-			<NOM:attribute name="EnemyCurX" dataType="FloatBE"/>
-			<NOM:attribute name="EnemyCurY" dataType="FloatBE"/>
-		</NOM:object>
 	</NOM:objects>
-	<!--  interaction data  -->
 	<NOM:interactions>
+    <!--  interaction data  -->
 		<NOM:interaction name="SCN_DEPLOY" id="1001" sharing="Subscribe" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
@@ -38,29 +25,49 @@
 			<NOM:parameter name="LauncherInitY" dataType="FloatBE"/>
 			<NOM:parameter name="LauncherStock" dataType="UnsignedIntegerBE"/>
 		</NOM:interaction>
+    
 		<NOM:interaction name="SIM_CONTROL" id="1002" sharing="Subscribe" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="OperationType" dataType="UnsignedIntegerBE"/>
 		</NOM:interaction>
+    
 		<NOM:interaction name="SIM_STATUS" id="1003" sharing="Publish" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="SimulatorState" dataType="UnsignedIntegerBE"/>
 		</NOM:interaction>
+    
 		<NOM:interaction name="ROS_DETECTION" id="1004" sharing="Neither" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="IsDetected" dataType="UnsignedIntegerBE"/>
 		</NOM:interaction>
+    
 		<NOM:interaction name="MSL_LAUNCH" id="1005" sharing="Subscribe" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
 		</NOM:interaction>
+
+    <NOM:interaction name="MSL_POSITION" id="1006" sharing="Neither" orderType="Receive" alignment="false">
+      <NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
+      <NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
+      <NOM:parameter name="MissileCurX" dataType="FloatBE"/>
+      <NOM:parameter name="MissileCurY" dataType="FloatBE"/>
+      <NOM:parameter name="IsShotDown" dataType="UnsignedIntegerBE"/>
+    </NOM:interaction>
+
 		<NOM:interaction name="ATS_SHOT_DOWN" id="1007" sharing="Neither" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
 		</NOM:interaction>
+
+    <NOM:interaction name="ATS_POSITION" id="1008" sharing="Neither" orderType="Receive" alignment="false">
+      <NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
+      <NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
+      <NOM:parameter name="EnemyCurX" dataType="FloatBE"/>
+      <NOM:parameter name="EnemyCurY" dataType="FloatBE"/>
+    </NOM:interaction>
 	</NOM:interactions>
 	<!--  data types  -->
 	<NOM:dataTypes>

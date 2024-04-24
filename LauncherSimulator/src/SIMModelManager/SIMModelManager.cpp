@@ -1,72 +1,30 @@
 #include "SIMModelManager.h"
 
-/************************************************************************
-  Constructor / Destructor
-************************************************************************/
-SIMModelManager::SIMModelManager(void) { init(); }
+void SIMModelManager::scnDeploy(shared_ptr<NOM> nomMsg) {
+  int x = nomMsg->getValue(_T("LauncherInitX"))->toUInt();
+  int y = nomMsg->getValue(_T("LauncherInitY"))->toUInt();
 
-SIMModelManager::~SIMModelManager(void) { release(); }
-
-void SIMModelManager::init() {
-  setUserName(_T("SIMModelManager"));
-
-  // by contract
-  mec = new MECComponent;
-  mec->setUser(this);
+  mLauncher->setPosition(x, y);
+  notifyStatus();
 }
 
-void SIMModelManager::release() {
-  meb = nullptr;
-  delete mec;
-  mec = nullptr;
+void SIMModelManager::simControl(shared_ptr<NOM> nomMsg) {
+  // do nothing
+  // only notification
+  notifyStatus();
 }
 
-/************************************************************************
-  Inherit Function
-************************************************************************/
-shared_ptr<NOM> SIMModelManager::registerMsg(tstring msgName) {
-  shared_ptr<NOM> nomMsg = mec->registerMsg(msgName);
-  registeredMsg.insert(
-      pair<unsigned int, shared_ptr<NOM>>(nomMsg->getInstanceID(), nomMsg));
-
-  return nomMsg;
+void SIMModelManager::mslLaunch(shared_ptr<NOM> nomMsg) {
+  mLauncher->launchMissile();
+  notifyStatus();
 }
 
-void SIMModelManager::discoverMsg(shared_ptr<NOM> nomMsg) {
-  discoveredMsg.insert(
-      pair<unsigned int, shared_ptr<NOM>>(nomMsg->getInstanceID(), nomMsg));
-}
-
-void SIMModelManager::updateMsg(shared_ptr<NOM> nomMsg) {
-  mec->updateMsg(nomMsg);
-}
-
-void SIMModelManager::reflectMsg(shared_ptr<NOM> nomMsg) {
-  // if need be, write your code
-}
-
-void SIMModelManager::deleteMsg(shared_ptr<NOM> nomMsg) {
-  mec->deleteMsg(nomMsg);
-  registeredMsg.erase(nomMsg->getInstanceID());
-}
-
-void SIMModelManager::removeMsg(shared_ptr<NOM> nomMsg) {
-  discoveredMsg.erase(nomMsg->getInstanceID());
-}
-
-void SIMModelManager::sendMsg(shared_ptr<NOM> nomMsg) { mec->sendMsg(nomMsg); }
-
-void SIMModelManager::recvMsg(shared_ptr<NOM> nomMsg) {
-  auto it = msgMethodMap.find(nomMsg->getName());
-  it->second(nomMsg);
-}
-
-void SIMModelManager::setUserName(tstring userName) { name = userName; }
-
-tstring SIMModelManager::getUserName() { return name; }
-
-void SIMModelManager::setData(void *data) {
-  // if need be, write your code
+void SIMModelManager::notifyStatus() {
+  auto nomMsg = meb->getNOMInstance(name, _T("SIM_STATUS"));
+  nomMsg->setValue(_T("MessageId"), &NUInteger(1003));
+  nomMsg->setValue(_T("MessageSize"), &NUInteger(12));
+  nomMsg->setValue(_T("SimulatorState"), &NUInteger(4));
+  sendMsg(nomMsg);
 }
 
 bool SIMModelManager::start() {
@@ -80,10 +38,9 @@ bool SIMModelManager::start() {
   function<void(shared_ptr<NOM>)> _sim_control;
   function<void(shared_ptr<NOM>)> _msl_launch;
 
-  _scn_deploy = bind(&SIMModelManager::setScenario, this, placeholders::_1);
-  _sim_control =
-      bind(&SIMModelManager::controlSimulation, this, placeholders::_1);
-  _msl_launch = bind(&SIMModelManager::missileLaunch, this, placeholders::_1);
+  _scn_deploy = bind(&SIMModelManager::scnDeploy, this, placeholders::_1);
+  _sim_control = bind(&SIMModelManager::simControl, this, placeholders::_1);
+  _msl_launch = bind(&SIMModelManager::mslLaunch, this, placeholders::_1);
 
   msgMethodMap.insert(make_pair(_T("SCN_DEPLOY"), _scn_deploy));
   msgMethodMap.insert(make_pair(_T("SIM_CONTROL"), _sim_control));
@@ -96,53 +53,4 @@ bool SIMModelManager::stop() {
   delete mLauncher;
   delete mData;
   return true;
-}
-
-void SIMModelManager::setMEBComponent(IMEBComponent *realMEB) {
-  meb = realMEB;
-  mec->setMEB(meb);
-}
-
-/************************************************************************
-  message processor
-************************************************************************/
-void SIMModelManager::processStartMsg(shared_ptr<NOM> nomMsg) {
-  // if need be, write your code
-}
-
-void SIMModelManager::setScenario(shared_ptr<NOM> nomMsg) {
-  int x = nomMsg->getValue(_T("LauncherInitX"))->toUInt();
-  int y = nomMsg->getValue(_T("LauncherInitY"))->toUInt();
-
-  mLauncher->setPosition(x, y);
-  notifyStatus();
-}
-
-void SIMModelManager::controlSimulation(shared_ptr<NOM> nomMsg) {
-  // do nothing
-  // only notification
-  notifyStatus();
-}
-
-void SIMModelManager::missileLaunch(shared_ptr<NOM> nomMsg) {
-  mLauncher->launchMissile();
-  notifyStatus();
-}
-
-void SIMModelManager::notifyStatus() {
-  auto nomMsg = meb->getNOMInstance(name, _T("SIM_STATUS"));
-  nomMsg->setValue(_T("MessageId"), &NUInteger(1003));
-  nomMsg->setValue(_T("MessageSize"), &NUInteger(12));
-  nomMsg->setValue(_T("SimulatorState"), &NUInteger(4));
-  sendMsg(nomMsg);
-}
-/************************************************************************
-  Export Function
-************************************************************************/
-extern "C" BASEMGRDLL_API BaseManager *createObject() {
-  return new SIMModelManager;
-}
-
-extern "C" BASEMGRDLL_API void deleteObject(BaseManager *userManager) {
-  delete userManager;
 }

@@ -12,9 +12,9 @@ class BASEMGRDLL_API SIMModelManager : public BaseManager {
 public:
   SIMModelManager(void);
   ~SIMModelManager(void);
-  void setScenario(shared_ptr<NOM>);
-  void controlSimulation(shared_ptr<NOM>);
-  void missileLaunch(shared_ptr<NOM>);
+  void scnDeploy(shared_ptr<NOM>);
+  void simControl(shared_ptr<NOM>);
+  void mslLaunch(shared_ptr<NOM>);
   void notifyStatus();
 
 public:
@@ -53,3 +53,94 @@ private:
   SIMModel* mLauncher;
   SharedData* mData;
 };
+
+/************************************************************************
+  Constructor / Destructor
+************************************************************************/
+SIMModelManager::SIMModelManager(void) { init(); }
+
+SIMModelManager::~SIMModelManager(void) { release(); }
+
+void SIMModelManager::init() {
+  setUserName(_T("SIMModelManager"));
+
+  // by contract
+  mec = new MECComponent;
+  mec->setUser(this);
+}
+
+void SIMModelManager::release() {
+  meb = nullptr;
+  delete mec;
+  mec = nullptr;
+}
+
+/************************************************************************
+  Inherit Function
+************************************************************************/
+shared_ptr<NOM> SIMModelManager::registerMsg(tstring msgName) {
+  shared_ptr<NOM> nomMsg = mec->registerMsg(msgName);
+  registeredMsg.insert(
+      pair<unsigned int, shared_ptr<NOM>>(nomMsg->getInstanceID(), nomMsg));
+
+  return nomMsg;
+}
+
+void SIMModelManager::discoverMsg(shared_ptr<NOM> nomMsg) {
+  discoveredMsg.insert(
+      pair<unsigned int, shared_ptr<NOM>>(nomMsg->getInstanceID(), nomMsg));
+}
+
+void SIMModelManager::updateMsg(shared_ptr<NOM> nomMsg) {
+  mec->updateMsg(nomMsg);
+}
+
+void SIMModelManager::reflectMsg(shared_ptr<NOM> nomMsg) {
+  // if need be, write your code
+}
+
+void SIMModelManager::deleteMsg(shared_ptr<NOM> nomMsg) {
+  mec->deleteMsg(nomMsg);
+  registeredMsg.erase(nomMsg->getInstanceID());
+}
+
+void SIMModelManager::removeMsg(shared_ptr<NOM> nomMsg) {
+  discoveredMsg.erase(nomMsg->getInstanceID());
+}
+
+void SIMModelManager::sendMsg(shared_ptr<NOM> nomMsg) { mec->sendMsg(nomMsg); }
+
+void SIMModelManager::recvMsg(shared_ptr<NOM> nomMsg) {
+  auto msgMapKey = nomMsg->getName();
+  tcout << "message received :: " << msgMapKey << "\n";
+  auto it = msgMethodMap.find(msgMapKey);
+  it->second(nomMsg);
+}
+
+void SIMModelManager::setUserName(tstring userName) { name = userName; }
+
+tstring SIMModelManager::getUserName() { return name; }
+
+void SIMModelManager::setData(void* data) {
+  // if need be, write your code
+}
+
+void SIMModelManager::processStartMsg(shared_ptr<NOM> nomMsg) {
+  // if need be, write your code
+}
+
+void SIMModelManager::setMEBComponent(IMEBComponent* realMEB) {
+  meb = realMEB;
+  mec->setMEB(meb);
+}
+
+/************************************************************************
+  Export Function
+************************************************************************/
+extern "C" BASEMGRDLL_API BaseManager* createObject() {
+  return new SIMModelManager;
+}
+
+extern "C" BASEMGRDLL_API void deleteObject(BaseManager* userManager) {
+  delete userManager;
+}
