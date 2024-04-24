@@ -19,6 +19,12 @@
 			<NOM:parameter name="EnemyCurX" dataType="FloatBE"/>
 			<NOM:parameter name="EnemyCurY" dataType="FloatBE"/>
 		</NOM:interaction>
+		<NOM:interaction name="ATS_POSITION_MSL" id="2008" sharing="Publish" orderType="Receive" alignment="false">
+			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
+			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
+			<NOM:parameter name="EnemyCurX" dataType="FloatBE"/>
+			<NOM:parameter name="EnemyCurY" dataType="FloatBE"/>
+		</NOM:interaction>
 		<NOM:interaction name="SCN_DEPLOY" id="1001" sharing="Subscribe" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
@@ -53,7 +59,7 @@
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="IsDetected" dataType="UnsignedIntegerBE"/>
 		</NOM:interaction>
-		<NOM:interaction name="MSL_LAUNCH" id="1005" sharing="Neither" orderType="Receive" alignment="false">
+		<NOM:interaction name="MSL_LAUNCH" id="1005" sharing="Subscribe" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
 		</NOM:interaction>

@@ -1,6 +1,7 @@
 #pragma once
 #include <nFramework/mec/MECComponent.h>
 #include <nFramework/comm/NCommInterface.h>
+#include <nFramework/nom/NOMMain.h>
 #include "CommMessageHandler.h"
 
 class BASEMGRDLL_API UDPCommunicationManager : public BaseManager
@@ -43,5 +44,7 @@ private:
 	CommunicationInterface* commInterface;
 	CommunicationConfig* commConfig;
 	CommMessageHandler commMsgHandler;
+    shared_ptr<NOM> ATS_TO_MSL;
+    bool missileLaunched;
 };
 
