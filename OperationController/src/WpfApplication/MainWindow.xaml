@@ -118,7 +118,7 @@
             </Grid>
             <!--2. 모의 시작, 배포, 중지 버튼-->
             <Grid Grid.Column="1" Grid.Row="1">
-                <Button x:Name="btnScnDeploy" Content="모의 배포" Height="50" Margin="0,0,0,107"/>
+                <Button x:Name="btnScnDeploy" Content="모의 배포" Height="50" Margin="0,0,0,107" Click="btnScnDeployClick"/>
                 <Button x:Name="btnScnStart" Content="모의 시작" Height="50" Margin="0,50,0,57" Click="btnScnStartClick"/>
                 <Button x:Name="btnScnStop" Content="모의 중지" Height="50" Margin="0,100,0,7"/>
             </Grid>
