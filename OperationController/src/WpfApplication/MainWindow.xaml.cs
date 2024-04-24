@@ -461,9 +461,11 @@ namespace WpfApplication1
             mapGrid.Children.Add(img_radar);
             mapGrid.Children.Add(img_enemyS);
             mapGrid.Children.Add(img_enemyT);
+            mapGrid.Children.Add(img_enemyE);
+            mapGrid.Children.Add(img_missile);
             // 콤보박스 초기화
 
-            
+
         }
 
         private bool isAllCheckedStatus()
@@ -479,7 +481,7 @@ namespace WpfApplication1
             else return false;
         }
 
-        // 유도탄 로직
+        // 유도탄, 공중위협 로직
         static bool enemyDetected = false;      // 탐지 여부
         static bool isLaunched = false;         // 발사 여부
         static bool isShotDown = false;         // 격추 여부
@@ -489,17 +491,117 @@ namespace WpfApplication1
 
         private void btnLaunchClick(object sender, RoutedEventArgs e)
         {
-            
-
             Console.WriteLine(">> btnLaunchClick() : ");
             Console.WriteLine("===================================");
 
+            // 미사일 위치 조정 및 display
             img_missile.Margin = new System.Windows.Thickness { Left = s_missileX, Top = s_missileY };
             img_missile.Visibility = Visibility.Visible;
             Console.WriteLine(">> s_missileX, s_missileY : " + s_missileX + ", " + s_missileY);
+            Console.WriteLine("===================================");
         }
 
-        // 공중위협 로직
+        private void btnScnStartClick(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(">> btnScnStartClick() : ");
+            Console.WriteLine(">> 모의를 시작합니다.  ");
+            Console.WriteLine("===================================");
+
+            // 공중위협 위치 조정 및 display
+            img_enemyE.Margin = new System.Windows.Thickness { Left = s_enemySx, Top = s_enemySy };
+            img_enemyE.Visibility = Visibility.Visible;
+            Console.WriteLine(">> s_enemySx, s_enemySy : " + s_enemySx + ", " + s_enemySy);
+            Console.WriteLine("===================================");
+        }
+        
+        /* MSL_POSITION 에 따라 점 찍고 이미지 이동*/
+        private void moveMissile(float x, float y, int isShotDown)
+        {
+            // 격추 안됐다면
+            if (isShotDown == 1)
+            {
+                float nx = x;
+                float ny = y;
+                // 현재좌표(s_missileX, s_missileY) 점 찍기
+                drawPoint(s_missileX, s_missileY, nx, ny);
+                // 새로 넘어온 좌표로 이미지 이동시키기
+                img_missile.Margin = new System.Windows.Thickness { Left = nx, Top = ny };
+                // 다음 좌표로 갱신 
+                s_missileX = nx;
+                s_missileY = ny;
+            }
+            // 격추 됐다면
+            else if (isShotDown == 2)
+            {
+                // 이벤트로그에 모의 중지됨을 전시
+                Console.WriteLine(">> 격추에 성공했습니다. 모의를 중지합니다  ");
+            }
+        }
+        /* moveMissile 테스트 코드 */
+        private void btnMoveMissileTestClick(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(">> 미사일 이동 테스트 : ");
+            Console.WriteLine("===================================");
+
+            int cnt = 0;
+            float nx = s_missileX;
+            float ny = s_missileY;
+
+            while (cnt < 1000)
+            {
+                nx += 1;
+                ny += 1;
+
+                moveMissile(nx, ny, 1);
+
+                cnt++;
+                Console.WriteLine("[" + cnt + "]: (" + nx + ", " + ny + ")");
+            }
+        }
+
+        /* ATS_POSITION 에 따라 이미지 이동 */
+        private void moveEnemy(float x, float y)
+        {
+            // 현재좌표(s_missileX, s_missileY) 점 찍기
+            // 새로 넘어온 좌표로 이미지 이동시키기
+            float nx = x;
+            float ny = y;
+            
+            // 새로 넘어온 좌표로 이미지 이동시키기
+            img_enemyE.Margin = new System.Windows.Thickness { Left = nx, Top = ny };
+            // 다음 좌표로 갱신 
+            s_enemySx = nx;
+            s_enemySy = ny;
+        }
+        /* moveMissile 테스트 코드 */
+        private void btnMoveEnemyTestClick(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine(">> 공중위협 이동 테스트 : ");
+            Console.WriteLine("===================================");
+
+            int cnt = 0;
+            float nx = s_enemySx;
+            float ny = s_enemySy;
+
+            while (cnt < 500)
+            {
+                nx += 1;
+                ny += 1;
+
+                moveEnemy(nx, ny);
+
+                cnt++;
+                Console.WriteLine("[" + cnt + "]: (" + nx + ", " + ny + ")");
+            }
+        }
+
+        /* 점 찍기 */
+        private void drawPoint(float cx, float cy, float nx, float ny)
+        {
+            Line missilePoint = createLine(cx, cy, nx, ny, Brushes.Blue, 2, null);
+            mapGrid.Children.Add(missilePoint);
+        }
+
 
     }
 }
