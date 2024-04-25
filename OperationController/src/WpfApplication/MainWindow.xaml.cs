@@ -125,6 +125,8 @@ namespace WpfApplication1
                     float missileNy = (icdNOM.getValue("MissileCurY").toFloat());
                     isShotDown = (int)(icdNOM.getValue("IsShotDown").toUInt());
 
+                    moveMissile(missileNx, missileNy, isShotDown);
+
                     if(isShotDown == 2)
                     {
                         Console.WriteLine(">> 격추에 성공하였습니다. 모의를 중지합니다.");
