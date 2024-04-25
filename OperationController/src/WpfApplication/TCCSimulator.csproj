@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{CD5CC88E-978F-4876-976F-B56666560F0D}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WpfApplication</RootNamespace>
     <AssemblyName>TCCSimulator</AssemblyName>
@@ -92,9 +92,6 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject />
-  </PropertyGroup>
   <ItemGroup>
     <Reference Include="NOM, Version=1.0.0.0, Culture=neutral, processorArchitecture=AMD64">
       <SpecificVersion>False</SpecificVersion>
@@ -178,30 +175,6 @@
       <Project>{8d374c78-6b1b-4fc6-b490-df07c0197af1}</Project>
       <Name>GUIConnector</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="map.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="test.PNG" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="1_발사대.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="2_레이다.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="3_공중위협초기.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="4_공중위협타겟.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="5_공중위협객체.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="6_유도탄미사일.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
