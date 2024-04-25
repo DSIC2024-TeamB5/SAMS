@@ -84,11 +84,41 @@ void
 CommandManager::recvMsg(shared_ptr<NOM> nomMsg)
 {
 	// you can change the code below, if necessary
-	if (nomMsg->getName() == _T("GUI_Start"))
+	if (nomMsg->getName() == _T("SIM_CONTROL"))
 	{
-		ICD_TestNOM->setValue(_T("Message1"), &NUInteger(7));
-		this->updateMsg(ICD_TestNOM);
-	}
+          unsigned int OpType = nomMsg->getValue(_T("OperationType"))->toUInt();
+
+          if (OpType == static_cast<int>(OP_TYPE::START_SIM))
+		  {
+				this->startSimulation();
+		  } 
+		  else
+		  {
+				this->stopSimulation();
+		  }
+        } 
+	else if (nomMsg->getName() == _T("MSL_LAUNCH"))
+	{
+          tcout << _T(":::::::::missileLaunched!:::::::::\n");
+		  if(!missileLaunched)
+	        missileLaunched = true;
+	} 
+	else if (nomMsg->getName() == _T("ATS_POSITION")) 
+	{
+          if (missileLaunched)
+		  {
+			  // 추후 interaction으로 변경
+            auto ATS_POSTITION_TO_MSL = meb->getNOMInstance(name, _T("ATS_POSITION_TO_MSL"));
+
+            ATS_POSTITION_TO_MSL->setValue(_T("MessageId"), &NUInteger(1008));
+            ATS_POSTITION_TO_MSL->setValue(_T("MessageSize"), &NUInteger(16));
+            ATS_POSTITION_TO_MSL->setValue(_T("EnemyCurX"), &NFloat(nomMsg->getValue(_T("EnemyCurX"))->toFloat()));
+			ATS_POSTITION_TO_MSL->setValue(_T("EnemyCurY"), &NFloat(nomMsg->getValue(_T("EnemyCurY"))->toFloat()));
+
+            this->sendMsg(ATS_POSTITION_TO_MSL);
+		  }
+			  
+    }
 
 	// if need be, write your code
 }
@@ -115,7 +145,14 @@ bool
 CommandManager::start()
 {
 	// you can change the code below, if necessary
-	ICD_TestNOM = this->registerMsg(_T("ICD_Test1"));
+
+	nTimer = &NTimer::getInstance();
+    isRunning = false;
+    missileLaunched = false;
+    simReqMsgATS_ROS = meb->getNOMInstance(name, _T("SIM_CONTROL_ATS_ROS"));
+    simReqMsgATS_ROS->setValue(_T("MessageId"), &NUInteger(1002));
+    simReqMsgATS_ROS->setValue(_T("MessageSize"), &NUInteger(12));
+    simReqMsgATS_ROS->setValue(_T("OperationType"), &NUInteger(2));
 
 	return true;
 }
@@ -123,6 +160,7 @@ CommandManager::start()
 bool
 CommandManager::stop()
 {
+
 	this->deleteMsg(ICD_TestNOM);
 
 	return true;
@@ -133,6 +171,38 @@ CommandManager::setMEBComponent(IMEBComponent* realMEB)
 {
 	meb = realMEB;
 	mec->setMEB(meb);
+}
+
+/************************************************************************
+        message processor
+************************************************************************/
+void
+CommandManager::startSimulation() 
+{
+	if (!isRunning) {
+		isRunning = true;
+
+		function<void(void *)> periodicFunc;
+	    periodicFunc = std::bind(&CommandManager::sendPeriodically, this);
+		timerHandle = 0;
+		timerHandle = nTimer->addPeriodicTask(100, periodicFunc);
+	}
+}
+
+void                                                                
+CommandManager::stopSimulation() 
+{
+	// if need be, write your code
+	isRunning = false;
+    missileLaunched = false;
+	nTimer->removeTask(timerHandle);
+}
+
+
+void 
+CommandManager::sendPeriodically()
+{ 
+    this->sendMsg(simReqMsgATS_ROS);
 }
 
 /************************************************************************

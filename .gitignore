@@ -1,5 +1,21 @@
+# lib
+**/lib/
+
+# Debug
+**/Debug/
+
+# obj
+**/obj/
+
 # .vs
 .vs/
+
+# cs build output
+*.pdb
+*.csproj
+binx64Debug
+binAnyCPUDebug
+binx86Debug
 
 # Prerequisites
 *.d
@@ -17,7 +33,6 @@
 # Compiled Dynamic libraries
 *.so
 *.dylib
-*.dll
 
 # Fortran module files
 *.mod
@@ -32,4 +47,11 @@
 # Executables
 *.exe
 *.out
+<<<<<<< HEAD
 *.app
+=======
+*.app
+
+# gtest package
+**/packages/
+>>>>>>> dev

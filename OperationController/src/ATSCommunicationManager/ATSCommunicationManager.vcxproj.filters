@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+<<<<<<<< HEAD:OperationController/src/ATSCommunicationManager/ATSCommunicationManager.vcxproj.filters
+    <ClCompile Include="ATSCommunicationManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+========
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{497d3ec2-e110-4dc0-a8c2-89e8f95400be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{f087c445-e3f4-4bb2-9d96-fd4155c40eaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{86a73415-f8d3-4fa7-8b78-ae1f61518c72}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+>>>>>>>> dev:MissileSimulator/src/UDPManager/UDPManager.vcxproj.filters
+    <ClCompile Include="CommMessageHandler.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="UDPManager.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+<<<<<<<< HEAD:OperationController/src/ATSCommunicationManager/ATSCommunicationManager.vcxproj.filters
+    <ClInclude Include="ATSCommunicationManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+========
+>>>>>>>> dev:MissileSimulator/src/UDPManager/UDPManager.vcxproj.filters
+    <ClInclude Include="CommMessageHandler.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="UDPManager.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+<<<<<<<< HEAD:OperationController/src/ATSCommunicationManager/ATSCommunicationManager.vcxproj.filters
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{2753e9e9-a910-4e66-bbb3-7762f2e6df88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{da15fb26-179d-41d7-83c8-de82ac791ec1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{18e4782d-f9b3-42d2-9a3f-b23c711aef41}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\bin\ATSCommunicationManager\CommLinkInfo.ini">
+========
+    <Xml Include="..\..\bin\UDPManager\UDPManager.xml">
+      <Filter>리소스 파일</Filter>
+    </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\bin\UDPManager\CommLinkInfo.ini">
+>>>>>>>> dev:MissileSimulator/src/UDPManager/UDPManager.vcxproj.filters
+      <Filter>리소스 파일</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\bin\ATSCommunicationManager\ATSCommunicationManager.xml">
+      <Filter>리소스 파일</Filter>
+    </Xml>
+  </ItemGroup>
+</Project>
