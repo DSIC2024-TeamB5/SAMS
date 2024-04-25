@@ -718,7 +718,7 @@ namespace WpfApplication1
         {
             writeEventLog(7);
             writeEventLog(8);
-            s_missileStock--;
+            s_missileStock -= 1;
             Console.WriteLine(">> btnLaunchClick() : ");
             Console.WriteLine("===================================");
 
