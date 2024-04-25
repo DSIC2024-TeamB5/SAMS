@@ -87,9 +87,10 @@ CommandManager::recvMsg(shared_ptr<NOM> nomMsg)
 	if (nomMsg->getName() == _T("SIM_CONTROL"))
 	{
           unsigned int OpType = nomMsg->getValue(_T("OperationType"))->toUInt();
+
           if (OpType == static_cast<int>(OP_TYPE::START_SIM))
 		  {
-					this->startSimulation();
+				this->startSimulation();
 		  } 
 		  else
 		  {
@@ -98,7 +99,8 @@ CommandManager::recvMsg(shared_ptr<NOM> nomMsg)
         } 
 	else if (nomMsg->getName() == _T("MSL_LAUNCH"))
 	{
-          missileLaunched = true;
+		  if(!missileLaunched)
+	        missileLaunched = true;
 	} 
 	else if (nomMsg->getName() == _T("ATS_POSITION")) 
 	{
