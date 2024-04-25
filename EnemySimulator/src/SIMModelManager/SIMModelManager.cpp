@@ -1,6 +1,11 @@
 #include "SIMModelManager.h"
 
 void SIMModelManager::scnDeploy(shared_ptr<NOM> nomMsg) {
+  delete enemySim;
+  delete mData;
+  mData = new SharedData;
+  enemySim = new EnemySimulation(mData);
+
   float initX = nomMsg->getValue(_T("EnemyInitX"))->toFloat() * 1000;
   float initY = nomMsg->getValue(_T("EnemyInitY"))->toFloat() * 1000;
   float destX = nomMsg->getValue(_T("EnemyDestX"))->toFloat() * 1000;
