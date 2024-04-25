@@ -32,6 +32,16 @@ void SIMModelManager::atsPosition(shared_ptr<NOM> nomMsg) {
   float enemycurX = nomMsg->getValue(_T("EnemyCurX"))->toFloat();
   float enemycurY = nomMsg->getValue(_T("EnemyCurY"))->toFloat();
   mRadar->calculateEnemyDistance(enemycurX, enemycurY);
+  mRadar->detectEnemy();
+
+  bool istargetdetect = mData->isTargetDetect;
+  auto _nomMsg = meb->getNOMInstance(name, _T("ROS_DETECTION"));
+
+  _nomMsg->setValue(_T("MessageId"), &NUInteger(1004));
+  _nomMsg->setValue(_T("MessageSize"), &NUInteger(12));
+  _nomMsg->setValue(_T("IsDetected"), &NUInteger((int)istargetdetect));
+
+  this->sendMsg(_nomMsg);  // 현재 탐지 여부 전~송
 }
 
 void SIMModelManager::notifyStatus() {
