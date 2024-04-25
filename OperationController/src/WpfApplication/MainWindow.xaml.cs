@@ -472,7 +472,7 @@ namespace WpfApplication1
 
             NOMInfo nomInfo = new NOMInfo();
             nomInfo.MsgName = "SCN_CONTROL";
-            nomInfo.MsgID = 1001;
+            nomInfo.MsgID = 1002;
             nomInfo.MsgLen = byteSize;
 
             IntPtr ptr = Marshal.AllocHGlobal(nomInfo.MsgLen);

@@ -189,7 +189,7 @@ CommandManager::startSimulation()
 	}
 }
 
-void 
+void                                                                
 CommandManager::stopSimulation() 
 {
 	// if need be, write your code
