@@ -90,6 +90,7 @@ UDPCommunicationManager::removeMsg(shared_ptr<NOM> nomMsg)
 void
 UDPCommunicationManager::sendMsg(shared_ptr<NOM> nomMsg)
 {
+
 	mec->sendMsg(nomMsg);
 }
 

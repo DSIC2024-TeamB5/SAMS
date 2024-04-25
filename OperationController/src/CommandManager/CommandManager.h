@@ -48,7 +48,6 @@ private:
 	// you can change the code, if necessary
 	shared_ptr<NOM> ICD_TestNOM;
     shared_ptr<NOM> simReqMsgATS_ROS;
-    shared_ptr<NOM> simReqMsgMSL_LOS;
     NTimer *nTimer;
     int timerHandle;
     bool isRunning;
