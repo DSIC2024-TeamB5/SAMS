@@ -17,7 +17,8 @@ void
 CommMessageHandler::initialize()
 {
 	// if need be, write your code
-	setIDNameTable(100, _T("MessageName"));
+	setIDNameTable(1003, _T("SIM_STATUS"));
+    setIDNameTable(1008, _T("ATS_POSITION"));
 }
 
 void
