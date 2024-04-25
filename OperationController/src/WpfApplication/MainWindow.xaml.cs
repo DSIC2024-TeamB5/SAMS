@@ -664,6 +664,9 @@ namespace WpfApplication1
             launcherStatus.Fill = new SolidColorBrush(Colors.DarkGreen);
             // 유도탄 발사 버튼 비활성화
             btnLaunch.IsEnabled = false;
+            // 모의 배포 & 시작 버튼 비활성화
+            btnScnDeploy.IsEnabled = false;
+            btnScnStart.IsEnabled = false;
             // 콤보박스 초기화
         }
 
