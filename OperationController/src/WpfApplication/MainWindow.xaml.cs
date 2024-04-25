@@ -149,11 +149,9 @@ namespace WpfApplication1
                     //공중위협 정보 갱신
                     float enemyNx = (icdNOM.getValue("EnemyCurX").toFloat());
                     float enemyNy = (icdNOM.getValue("EnemyCurY").toFloat());
-
-                    Console.WriteLine("현재 좌표 =(" + s_enemySx + ", " + s_enemySy + ")");
+                    //Console.WriteLine("현재 좌표 =(" + s_enemySx + ", " + s_enemySy + ")");
                     moveEnemy(enemyNx, enemyNy);
-                    Console.WriteLine("다음 좌표 =(" + s_enemySx + ", " + s_enemySy + ")");
-
+                    //Console.WriteLine("다음 좌표 =(" + s_enemySx + ", " + s_enemySy + ")");
                 }
             }
             else if (msg == UM_ReflectedNOM)
@@ -480,7 +478,7 @@ namespace WpfApplication1
             parser.nomFilePath = "GUI_NOM.xml";
             parser.parse();
 
-            NMessage icdMsg = parser.getMessageObject("SCN_CONTROL");
+            NMessage icdMsg = parser.getMessageObject("SIM_CONTROL");
             NOM startNOM = icdMsg.createNOMInstance();
             startNOM.setValue("MessageId", new NUInteger(1002));
             startNOM.setValue("MessageSize", new NUInteger(12));
@@ -490,8 +488,8 @@ namespace WpfApplication1
             byte[] nomBytes = startNOM.serialize(out byteSize);
 
             NOMInfo nomInfo = new NOMInfo();
-            nomInfo.MsgName = "SCN_CONTROL";
-            nomInfo.MsgID = 1001;
+            nomInfo.MsgName = "SIM_CONTROL";
+            nomInfo.MsgID = 1002;
             nomInfo.MsgLen = byteSize;
 
             IntPtr ptr = Marshal.AllocHGlobal(nomInfo.MsgLen);
@@ -700,6 +698,28 @@ namespace WpfApplication1
             writeEventLog(8);
             Console.WriteLine(">> btnLaunchClick() : ");
             Console.WriteLine("===================================");
+
+            NOMParser parser = new NOMParser();
+            parser.nomFilePath = "GUI_NOM.xml";
+            parser.parse();
+
+            NMessage icdMsg = parser.getMessageObject("MSL_LAUNCH");
+            NOM startNOM = icdMsg.createNOMInstance();
+            startNOM.setValue("MessageId", new NUInteger(1005));
+            startNOM.setValue("MessageSize", new NUInteger(8));
+
+            int byteSize = 0;
+            byte[] nomBytes = startNOM.serialize(out byteSize);
+
+            NOMInfo nomInfo = new NOMInfo();
+            nomInfo.MsgName = "MSL_LAUNCH";
+            nomInfo.MsgID = 1005;
+            nomInfo.MsgLen = byteSize;
+
+            IntPtr ptr = Marshal.AllocHGlobal(nomInfo.MsgLen);
+
+            Marshal.Copy(nomBytes, 0, ptr, nomInfo.MsgLen);
+            SendMsg(GUIConnObj, nomInfo, ptr);
 
             // 미사일 위치 조정 및 display
             img_missile.Margin = new System.Windows.Thickness { Left = s_missileX - MISSILE_ENEMY_MARGIN, Top = s_missileY - MISSILE_ENEMY_MARGIN };

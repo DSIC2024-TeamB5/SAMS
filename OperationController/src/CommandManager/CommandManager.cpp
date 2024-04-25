@@ -99,6 +99,7 @@ CommandManager::recvMsg(shared_ptr<NOM> nomMsg)
         } 
 	else if (nomMsg->getName() == _T("MSL_LAUNCH"))
 	{
+          tcout << _T(":::::::::missileLaunched!:::::::::\n");
 		  if(!missileLaunched)
 	        missileLaunched = true;
 	} 
@@ -107,7 +108,7 @@ CommandManager::recvMsg(shared_ptr<NOM> nomMsg)
           if (missileLaunched)
 		  {
 			  // 추후 interaction으로 변경
-            auto ATS_POSTITION_TO_MSL = meb->getNOMInstance(name, _T("ATS_POSTITION_TO_MSL"));
+            auto ATS_POSTITION_TO_MSL = meb->getNOMInstance(name, _T("ATS_POSITION_TO_MSL"));
 
             ATS_POSTITION_TO_MSL->setValue(_T("MessageId"), &NUInteger(1008));
             ATS_POSTITION_TO_MSL->setValue(_T("MessageSize"), &NUInteger(16));
@@ -184,11 +185,11 @@ CommandManager::startSimulation()
 		function<void(void *)> periodicFunc;
 	    periodicFunc = std::bind(&CommandManager::sendPeriodically, this);
 		timerHandle = 0;
-		timerHandle = nTimer->addPeriodicTask(1000, periodicFunc);
+		timerHandle = nTimer->addPeriodicTask(100, periodicFunc);
 	}
 }
 
-void 
+void                                                                
 CommandManager::stopSimulation() 
 {
 	// if need be, write your code

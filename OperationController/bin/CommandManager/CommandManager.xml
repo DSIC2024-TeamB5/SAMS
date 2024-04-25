@@ -26,7 +26,7 @@
 			<NOM:parameter name="EnemyCurY" dataType="FloatBE"/>
 		</NOM:interaction>
 		<NOM:interaction name="SCN_DEPLOY" id="1001" sharing="Subscribe" orderType="Receive" alignment="false">
-			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
+			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>                                               
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="EnemyInitX" dataType="FloatBE"/>
 			<NOM:parameter name="EnemyInitY" dataType="FloatBE"/>

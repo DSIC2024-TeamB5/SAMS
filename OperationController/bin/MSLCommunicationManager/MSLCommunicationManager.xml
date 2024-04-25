@@ -13,7 +13,7 @@
 			<NOM:parameter name="MissileCurY" dataType="FloatBE"/>
 			<NOM:parameter name="IsShotDown" dataType="UnsignedIntegerBE"/>
 		</NOM:interaction>
-		<NOM:interaction name="ATS_POSITION__TO_MSL" id="2008" sharing="Subscribe" orderType="Receive" alignment="false">
+		<NOM:interaction name="ATS_POSITION_TO_MSL" id="2008" sharing="Subscribe" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="EnemyCurX" dataType="FloatBE"/>
