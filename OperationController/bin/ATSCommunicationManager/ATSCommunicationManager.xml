@@ -19,12 +19,6 @@
 			<NOM:parameter name="EnemyCurX" dataType="FloatBE"/>
 			<NOM:parameter name="EnemyCurY" dataType="FloatBE"/>
 		</NOM:interaction>
-		<NOM:interaction name="ATS_POSITION_MSL" id="2008" sharing="Publish" orderType="Receive" alignment="false">
-			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
-			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
-			<NOM:parameter name="EnemyCurX" dataType="FloatBE"/>
-			<NOM:parameter name="EnemyCurY" dataType="FloatBE"/>
-		</NOM:interaction>
 		<NOM:interaction name="SCN_DEPLOY" id="1001" sharing="Subscribe" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>

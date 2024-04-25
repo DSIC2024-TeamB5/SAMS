@@ -44,7 +44,7 @@ private:
 	CommunicationInterface* commInterface;
 	CommunicationConfig* commConfig;
 	CommMessageHandler commMsgHandler;
-    shared_ptr<NOM> ATS_TO_MSL;
-    bool missileLaunched;
+    //shared_ptr<NOM> ATS_TO_MSL;
+    //bool missileLaunched;
 };
 

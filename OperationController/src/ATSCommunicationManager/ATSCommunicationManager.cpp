@@ -92,12 +92,6 @@ UDPCommunicationManager::sendMsg(shared_ptr<NOM> nomMsg)
 {
 
 	mec->sendMsg(nomMsg);
-	if (!missileLaunched)
-	{
-          ATS_TO_MSL->setValue(_T("EnemyCurX"), &NFloat(nomMsg->getValue(_T("EnemyCurX"))->toFloat()));
-          ATS_TO_MSL->setValue(_T("EnemyCurY"), &NFloat(nomMsg->getValue(_T("EnemyCurY"))->toFloat()));
-          mec->sendMsg(ATS_TO_MSL);
-	}
 }
 
 void
@@ -105,10 +99,6 @@ UDPCommunicationManager::recvMsg(shared_ptr<NOM> nomMsg)
 {
 	// if need be, write your code
 	tcout << this->getUserName() << _T(":: recv ----> sent through UDP") << endl;
-    if (nomMsg->getName() == _T("MSL_LAUNCH")) 
-	{
-          missileLaunched = true;	
-	}
 	commInterface->sendCommMsg(nomMsg);
 }
 
@@ -137,11 +127,6 @@ UDPCommunicationManager::start()
 	MessageProcessor msgProcessor = bind(&UDPCommunicationManager::processRecvMessage, this, placeholders::_1, placeholders::_2);
 	commConfig->setMsgProcessor(msgProcessor);
 	commInterface->initNetEnv(commConfig);
-
-	missileLaunched = false;
-
-	ATS_TO_MSL->setValue(_T("MessageId"), &NUInteger(1008));
-    ATS_TO_MSL->setValue(_T("MessageSize"), &NUInteger(16));
 
 	return true;
 }

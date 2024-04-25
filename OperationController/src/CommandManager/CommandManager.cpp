@@ -89,11 +89,7 @@ CommandManager::recvMsg(shared_ptr<NOM> nomMsg)
           unsigned int OpType = nomMsg->getValue(_T("OperationType"))->toUInt();
           if (OpType == static_cast<int>(OP_TYPE::START_SIM))
 		  {
-				if (!isRunning)
-				{
-					isRunning = true;
 					this->startSimulation();
-				}
 		  } 
 		  else
 		  {
@@ -103,7 +99,23 @@ CommandManager::recvMsg(shared_ptr<NOM> nomMsg)
 	else if (nomMsg->getName() == _T("MSL_LAUNCH"))
 	{
           missileLaunched = true;
-	}
+	} 
+	else if (nomMsg->getName() == _T("ATS_POSITION")) 
+	{
+          if (missileLaunched)
+		  {
+			  // 추후 interaction으로 변경
+            auto ATS_POSTITION_TO_MSL = meb->getNOMInstance(name, _T("ATS_POSTITION_TO_MSL"));
+
+            ATS_POSTITION_TO_MSL->setValue(_T("MessageId"), &NUInteger(1008));
+            ATS_POSTITION_TO_MSL->setValue(_T("MessageSize"), &NUInteger(16));
+            ATS_POSTITION_TO_MSL->setValue(_T("EnemyCurX"), &NFloat(nomMsg->getValue(_T("EnemyCurX"))->toFloat()));
+			ATS_POSTITION_TO_MSL->setValue(_T("EnemyCurY"), &NFloat(nomMsg->getValue(_T("EnemyCurY"))->toFloat()));
+
+            this->sendMsg(ATS_POSTITION_TO_MSL);
+		  }
+			  
+    }
 
 	// if need be, write your code
 }
@@ -138,10 +150,7 @@ CommandManager::start()
     simReqMsgATS_ROS->setValue(_T("MessageId"), &NUInteger(1002));
     simReqMsgATS_ROS->setValue(_T("MessageSize"), &NUInteger(12));
     simReqMsgATS_ROS->setValue(_T("OperationType"), &NUInteger(2));
-    simReqMsgMSL_LOS = meb->getNOMInstance(name, _T("SIM_CONTROL_MSL_LOS"));
-    simReqMsgMSL_LOS->setValue(_T("MessageId"), &NUInteger(1002));
-    simReqMsgMSL_LOS->setValue(_T("MessageSize"), &NUInteger(12));
-    simReqMsgMSL_LOS->setValue(_T("OperationType"), &NUInteger(2));
+
 	return true;
 }
 
@@ -167,11 +176,14 @@ CommandManager::setMEBComponent(IMEBComponent* realMEB)
 void
 CommandManager::startSimulation() 
 {
-	// if need be, write your code
-	function<void(void *)> periodicFunc;
-    periodicFunc = std::bind(&CommandManager::sendPeriodically, this);
-	timerHandle = 0;
-    timerHandle = nTimer->addPeriodicTask(1000, periodicFunc);
+	if (!isRunning) {
+		isRunning = true;
+
+		function<void(void *)> periodicFunc;
+	    periodicFunc = std::bind(&CommandManager::sendPeriodically, this);
+		timerHandle = 0;
+		timerHandle = nTimer->addPeriodicTask(1000, periodicFunc);
+	}
 }
 
 void 
@@ -188,8 +200,6 @@ void
 CommandManager::sendPeriodically()
 { 
     this->sendMsg(simReqMsgATS_ROS);
-	/*if (!missileLaunched) return;
-	this->sendMsg(simReqMsgMSL_LOS);*/
 }
 
 /************************************************************************
