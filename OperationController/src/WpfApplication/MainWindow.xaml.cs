@@ -112,8 +112,17 @@ namespace WpfApplication1
                 {
                     //탐지 여부에 따라 발사가능 여부 조절 함수 호출
                     //IsDetected : 1 = 탐지됨, 2 = 탐지 안됨
+                    bool isWritedLog = false;
                     isDetected = (int)(icdNOM.getValue("IsDetected").toUInt());
-                    if (isDetected == 1) btnLaunch.IsEnabled = true;
+                    if (isDetected == 1)
+                    {
+                        btnLaunch.IsEnabled = true;
+                        if (!isWritedLog)
+                        {
+                            isWritedLog = true;
+                            writeEventLog(6);
+                        }
+                    }
                     else if (isDetected == 2) btnLaunch.IsEnabled = false;
                 }
                 else if (MessageName == "MSL_POSITION")
@@ -129,6 +138,7 @@ namespace WpfApplication1
 
                     if(isShotDown == 2)
                     {
+                        writeEventLog(9);
                         Console.WriteLine(">> 격추에 성공하였습니다. 모의를 중지합니다.");
                         scnStop();
                     }
@@ -168,6 +178,8 @@ namespace WpfApplication1
             GUIConnObj = CreateGUIConn();
             DoPlugIn(GUIConnObj);
             SetHandle(GUIConnObj, GetWindowHandle(this));
+
+            writeEventLog(1);
         }
 
         /// <summary>
@@ -388,6 +400,7 @@ namespace WpfApplication1
 
         private void btnScnDeployClick(object sender, RoutedEventArgs e)
         {
+            writeEventLog(3);
             Console.WriteLine("===================================");
             Console.WriteLine(">> btnScnDeployClick() : ");
 
@@ -432,6 +445,7 @@ namespace WpfApplication1
 
         private void btnScnStopClick(object sender, RoutedEventArgs e) 
         {
+            writeEventLog(10);
             Console.WriteLine("===================================");
             Console.WriteLine(">> btnScnStopClick() : ");
 
@@ -461,6 +475,7 @@ namespace WpfApplication1
 
         private void scnStop()
         {
+            writeEventLog(10);
             NOMParser parser = new NOMParser();
             parser.nomFilePath = "GUI_NOM.xml";
             parser.parse();
@@ -583,13 +598,11 @@ namespace WpfApplication1
             {
                 // 모두 값이 채워져 있으면 SCN_DEPLOY에 setValue.
                 // 여기서 SCN_DEPLOY 에 setValue
+                writeEventLog(2);
                 Console.WriteLine(">> 시나리오 배포 준비가 되었습니다. ");
                 Console.WriteLine("===================================");
                 img_radar_range.Visibility = Visibility.Visible;
                 img_radar_range.Margin = new System.Windows.Thickness { Left = s_radarX - 200, Top = s_radarY - 200 };
-                // 임의로 true로 한거임 지우셈 나중에
-                //btnLaunch.IsEnabled = true;
-                // 임의로 true로 한거임 지우셈 나중에
             }
             else
             {
@@ -683,6 +696,8 @@ namespace WpfApplication1
 
         private void btnLaunchClick(object sender, RoutedEventArgs e)
         {
+            writeEventLog(7);
+            writeEventLog(8);
             Console.WriteLine(">> btnLaunchClick() : ");
             Console.WriteLine("===================================");
 
@@ -695,6 +710,7 @@ namespace WpfApplication1
 
         private void btnScnStartClick(object sender, RoutedEventArgs e)
         {
+            writeEventLog(4);
             Console.WriteLine(">> btnScnStartClick() : ");
             Console.WriteLine(">> 모의를 시작합니다.  ");
             Console.WriteLine("===================================");
@@ -726,6 +742,7 @@ namespace WpfApplication1
             Marshal.Copy(nomBytes, 0, ptr, nomInfo.MsgLen);
             SendMsg(GUIConnObj, nomInfo, ptr);
 
+            writeEventLog(5);
             Console.WriteLine(">> s_enemySx, s_enemySy : " + s_enemySx + ", " + s_enemySy);
             Console.WriteLine("===================================");
         }
@@ -818,6 +835,21 @@ namespace WpfApplication1
             mapGrid.Children.Add(missilePoint);
         }
 
-
+        /* 이벤트 로그 */
+        private void writeEventLog(int logType)
+        {
+            string curTime = DateTime.Now.ToString("HH:mm:ss");
+            if (logType == 1) eventLogBox.Items.Add("["+curTime+"] - 시스템 시작");
+            else if (logType == 2) eventLogBox.Items.Add("[" + curTime + "] - 모의 배포 준비 완료");
+            else if (logType == 3) eventLogBox.Items.Add("[" + curTime + "] - 모의 배포 ");
+            else if (logType == 4) eventLogBox.Items.Add("[" + curTime + "] - 모의 시작");
+            else if (logType == 5) eventLogBox.Items.Add("[" + curTime + "] - :: 공중위협 출발 ::");
+            else if (logType == 6) eventLogBox.Items.Add("[" + curTime + "] - :: 공중위협 탐지 :: ");
+            else if (logType == 7) eventLogBox.Items.Add("[" + curTime + "] - 유도탄 발사 명령");
+            else if (logType == 8) eventLogBox.Items.Add("[" + curTime + "] - :: 유도탄 발사 ::");
+            else if (logType == 9) eventLogBox.Items.Add("[" + curTime + "] - :: 격추 성공 ::");
+            else if (logType == 10) eventLogBox.Items.Add("[" + curTime + "] - 모의 중지");
+            else if (logType == 11) eventLogBox.Items.Add("[" + curTime + "] - :: 격추 실패 ::");
+        }
     }
 }
