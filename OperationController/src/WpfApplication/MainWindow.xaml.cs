@@ -102,12 +102,29 @@ namespace WpfApplication1
                     // 모의기 연결 상태 표시 함수 호출
                     // ATS : 1, MSL : 2, ROS : 3, LOS : 4
                     int SIM_KIND = (int)(icdNOM.getValue("SimulatorState").toUInt());
-                    
-                    if (SIM_KIND == 1) enemyStatus.Fill = new SolidColorBrush(Colors.LightGreen);
-                    else if (SIM_KIND == 2) missileStatus.Fill = new SolidColorBrush(Colors.LightGreen);
-                    else if (SIM_KIND == 3) radarStatus.Fill = new SolidColorBrush(Colors.LightGreen);
-                    else if (SIM_KIND == 4) launcherStatus.Fill = new SolidColorBrush(Colors.LightGreen);
 
+                    if (SIM_KIND == 1)
+                    {
+                        isOnATS = true;
+                        enemyStatus.Fill = new SolidColorBrush(Colors.LightGreen);
+                    }
+                    else if (SIM_KIND == 2)
+                    {
+                        isOnMSL = true;
+                        missileStatus.Fill = new SolidColorBrush(Colors.LightGreen);
+                    }
+                    else if (SIM_KIND == 3)
+                    {
+                        isOnROS = true;
+                        radarStatus.Fill = new SolidColorBrush(Colors.LightGreen);
+                    }
+                    else if (SIM_KIND == 4)
+                    {
+                        isOnLOS = true;
+                        launcherStatus.Fill = new SolidColorBrush(Colors.LightGreen);
+                    }
+
+                    if (isOnAllSIM()) btnScnStart.IsEnabled = true;
                 }
                 else if (MessageName == "ROS_DETECTION")
                 {
@@ -379,6 +396,12 @@ namespace WpfApplication1
         // 초기 좌표 string 변수
         static string initText = "초기 좌표";
 
+        // 모의기 상태 Flag
+        static bool isOnLOS = false;
+        static bool isOnROS = false;
+        static bool isOnATS = false;
+        static bool isOnMSL = false;
+
         // ScenarioDeploy Message 에 담을 필드
         // 발사대 필드
         static float s_launcherX = default;
@@ -406,6 +429,7 @@ namespace WpfApplication1
         private void btnScnDeployClick(object sender, RoutedEventArgs e)
         {
             writeEventLog(3);
+            
             Console.WriteLine("===================================");
             Console.WriteLine(">> btnScnDeployClick() : ");
 
@@ -459,7 +483,7 @@ namespace WpfApplication1
         private void scnStop()
         {
             writeEventLog(10);
-            clearFiled();
+            
             NOMParser parser = new NOMParser();
             parser.nomFilePath = "GUI_NOM.xml";
             parser.parse();
@@ -567,22 +591,17 @@ namespace WpfApplication1
         {
             Console.WriteLine(">> btnScnOkClick() : ");
             Console.WriteLine("===================================");
-            /*
-             * 아래 모든 필드가 채워져야만 ScenarioDeploy Message 에 담겨야함
-             * 
-             * 공중위협 초기좌표(x,y)
-             * 공중위협 목적좌표(x,y)
-             * 공중위협 속력, 유형
-             * 유도탄 초기좌표(x, y)
-             * 레이다 초기좌표(x, y)
-             * 발사대 초기좌표(x, y)
-             * 
-             */
+
             if (isAllCheckedStatus())
             {
                 // 모두 값이 채워져 있으면 SCN_DEPLOY에 setValue.
                 // 여기서 SCN_DEPLOY 에 setValue
                 writeEventLog(2);
+
+                curDist = calcDist(s_enemySx, s_enemySy, s_enemyTx, s_enemyTy);
+
+                // 모의 배포 버튼 활성화
+                btnScnDeploy.IsEnabled = true;
                 Console.WriteLine(">> 시나리오 배포 준비가 되었습니다. ");
                 Console.WriteLine("===================================");
                 img_radar_range.Visibility = Visibility.Visible;
@@ -599,9 +618,9 @@ namespace WpfApplication1
             Console.WriteLine(">> btnScnClearClick() : ");
             Console.WriteLine("===================================");
 
-            clearFiled();
+            clearField();
         }
-        private void clearFiled()
+        private void clearField()
         {
             // 발사대 필드
             s_launcherX = default;
@@ -635,10 +654,16 @@ namespace WpfApplication1
             mapGrid.Children.Clear();
             allImgSetToMapGrid();
             // 모의기 연결상태등 초기화
+            isOnATS = false;
+            isOnMSL = false;
+            isOnROS = false;
+            isOnLOS = false;
             enemyStatus.Fill = new SolidColorBrush(Colors.DarkGreen);
             missileStatus.Fill = new SolidColorBrush(Colors.DarkGreen);
             radarStatus.Fill = new SolidColorBrush(Colors.DarkGreen);
             launcherStatus.Fill = new SolidColorBrush(Colors.DarkGreen);
+            // 유도탄 발사 버튼 비활성화
+            btnLaunch.IsEnabled = false;
             // 콤보박스 초기화
         }
 
@@ -799,9 +824,19 @@ namespace WpfApplication1
         }
 
         /* 격추 실패 판단 */
+        static double curDist;
         private bool isEnemyDeparture(float enemyX, float enemyY)
         {
-            return isShotDown == 1 && enemyX == s_enemyTx && enemyY == s_enemyTy;
+            // enemyX, enemyY - s_enemyTx, s_enemyTy
+            double nextDist = calcDist(enemyX, enemyY, s_enemyTx, s_enemyTy);
+
+            // 현재 거리보다 다음 거리가 멀어지면 공중위협 타겟 도착 성공
+            if (curDist < nextDist) return true;
+            else
+            {
+                curDist = nextDist;
+                return false;
+            }
         }
 
         /* 상태창 업데이트 */
@@ -825,6 +860,11 @@ namespace WpfApplication1
             }
         }
         
+        /* 모든 모의기 상태 확인 */
+        private bool isOnAllSIM()
+        {
+            return isOnLOS && isOnROS && isOnMSL && isOnATS;
+        }
 
         /* 점 찍기 */
         private void drawPoint(float cx, float cy, float nx, float ny)
@@ -833,16 +873,24 @@ namespace WpfApplication1
             mapGrid.Children.Add(missilePoint);
         }
 
+        /* 거리 계산 */
+        private double calcDist(float sx, float sy, float ex, float ey)
+        {
+            double dist = Math.Pow((sx - ex), 2) + Math.Pow((sy - ey), 2);
+
+            return dist;
+        }
+
         /* 이벤트 로그 */
         private void writeEventLog(int logType)
         {
             string curTime = DateTime.Now.ToString("HH:mm:ss");
             if (logType == 1) eventLogBox.Items.Add("["+curTime+"] - 시스템 시작");
             else if (logType == 2) eventLogBox.Items.Add("[" + curTime + "] - 모의 배포 준비 완료");
-            else if (logType == 3) eventLogBox.Items.Add("[" + curTime + "] - 모의 배포 ");
+            else if (logType == 3) eventLogBox.Items.Add("[" + curTime + "] - 모의 배포 -> 모의 시작 버튼 활성화");
             else if (logType == 4) eventLogBox.Items.Add("[" + curTime + "] - 모의 시작");
             else if (logType == 5) eventLogBox.Items.Add("[" + curTime + "] - :: 공중위협 출발 ::");
-            else if (logType == 6) eventLogBox.Items.Add("[" + curTime + "] - :: 공중위협 탐지 :: ");
+            else if (logType == 6) eventLogBox.Items.Add("[" + curTime + "] - :: 공중위협 탐지 - 유도탄 발사 버튼 활성화 :: ");
             else if (logType == 7) eventLogBox.Items.Add("[" + curTime + "] - 유도탄 발사 명령");
             else if (logType == 8) eventLogBox.Items.Add("[" + curTime + "] - :: 유도탄 발사 ::");
             else if (logType == 9) eventLogBox.Items.Add("[" + curTime + "] - :: 격추 성공 ::");
