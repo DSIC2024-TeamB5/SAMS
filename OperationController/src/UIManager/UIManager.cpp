@@ -100,6 +100,14 @@ void
 UIManager::sendMsg(shared_ptr<NOM> nomMsg)
 {
 	// if need be, write your code
+		//if (nomMsg->getName() == _T("SIM_CONTROL")) {
+  //        auto _nomMsg = meb->getNOMInstance(name, _T("SIM_CONTROL"));
+  //        _nomMsg->setValue(_T("MessageId"), &NUInteger(1002));
+  //        _nomMsg->setValue(_T("MessageSize"), &NUInteger(12));
+  //        _nomMsg->setValue(_T("OperationType"), &NUInteger(1));
+  //        mec->sendMsg(_nomMsg);
+	 // }
+	//else
 	mec->sendMsg(nomMsg);
 }
 
@@ -108,8 +116,18 @@ UIManager::recvMsg(shared_ptr<NOM> nomMsg)
 {
 	// you can use the code below, if necessary
 	// shared_ptr<NOM> guiNOM = uiMessageHadler->getGUIMsgNOM(nomMsg);
+	auto length = 0;
+	unsigned char *nomBytes = nomMsg->serialize(length);
+
+	NOMInfo nomInfo;
+	_tcscpy(nomInfo.MsgName, nomMsg->getName().c_str());
+	nomInfo.MsgID = nomMsg->getMessageID();
+	nomInfo.MsgLen = length;
+
+	::SendMessage(winHandle, UM_ReceivedNOM, (WPARAM)&nomInfo, (LPARAM)nomBytes);
+	delete[] nomBytes;
 	
-	::SendMessage(winHandle, UM_ReceivedNOM, (WPARAM)nomMsg.get(), 0);
+	//::SendMessage(winHandle, UM_ReceivedNOM, (WPARAM)nomMsg.get(), 0);
 }
 
 void

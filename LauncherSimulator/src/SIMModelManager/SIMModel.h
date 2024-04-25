@@ -1,4 +1,36 @@
 #pragma once
+<<<<<<< HEAD
+#include <thread>
+#include <chrono>
+#include <functional>
+
+class SIMModel
+{
+public:
+	SIMModel();
+	~SIMModel();
+
+	void setThreatPosition(double x, double y);
+	void setThreatTargetPosition(double x, double y);
+	void start();
+	void stop();
+
+private:
+	std::thread* simThread = nullptr;
+
+	double initX, initY;
+	double targetX, targetY;
+	double speed;
+	double currentX, currentY;
+
+	bool isThreadRunning = false;
+
+private:
+	void threatSimulationThread();
+	void updateThreatPosition();
+};
+
+=======
 
 struct SharedData {
   float x;
@@ -17,3 +49,4 @@ public:
 private:
   SharedData* mData;
 };
+>>>>>>> dev

@@ -1,4 +1,10 @@
 #include "pch.h"
+<<<<<<< HEAD
+
+TEST(TestCaseName, TestName) {
+  EXPECT_EQ(1, 1);
+  EXPECT_TRUE(true);
+=======
 #include <math.h>
 
 TEST(TestCaseName, TestName) {
@@ -45,4 +51,5 @@ TEST(TestCaseName, TestName) {
 	model.detectEnemy();
 	EXPECT_EQ(1, data.isTargetDetect);
 	std::cout << "---%%---" << std::endl;
+>>>>>>> dev
 }

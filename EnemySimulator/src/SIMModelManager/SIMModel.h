@@ -1,4 +1,36 @@
 #pragma once
+<<<<<<< HEAD
+#include <thread>
+#include <chrono>
+#include <functional>
+
+class SIMModel
+{
+public:
+	SIMModel();
+	~SIMModel();
+
+	void setThreatPosition(double x, double y);
+	void setThreatTargetPosition(double x, double y);
+	void start();
+	void stop();
+
+private:
+	std::thread* simThread = nullptr;
+
+	double initX, initY;
+	double targetX, targetY;
+	double speed;
+	double currentX, currentY;
+
+	bool isThreadRunning = false;
+
+private:
+	void threatSimulationThread();
+	void updateThreatPosition();
+};
+
+=======
 #include <chrono>
 #include <functional>
 #include <thread>
@@ -59,3 +91,4 @@ class EnemySimulation  // 공중위협의 시작/도착위치를 설정하는 class
 
   void MoveEnemy();  // 공중위협의 현재 위치를 변경하는 함수
 };
+>>>>>>> dev
