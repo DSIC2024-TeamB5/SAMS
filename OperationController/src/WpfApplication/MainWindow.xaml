@@ -47,7 +47,7 @@
             <Grid Grid.Column="1" Grid.Row="0">
                 <Rectangle Fill="DarkGray" RadiusX="5" RadiusY="5"></Rectangle>
                 <!--발사대-->
-                <Ellipse HorizontalAlignment="Left" Margin="27,13,0,0" Fill="LightGreen" VerticalAlignment="Top" Height="30" Width="30"/>
+                <Ellipse x:Name="launcherStatus" HorizontalAlignment="Left" Margin="27,13,0,0" Fill="DarkGreen" VerticalAlignment="Top" Height="30" Width="30"/>
                 <TextBlock FontSize="20" Text="발사대" HorizontalAlignment="Left" Margin="65,13,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="30" Width="92"/>
                 <TextBlock FontSize="16" Text="좌표" HorizontalAlignment="Left" Margin="81,52,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="80" RenderTransformOrigin="-0.049,0.685"><Run Language="ko-kr" /></TextBlock>
                 <TextBlock FontSize="16" Text="유도탄보유대수(기)" HorizontalAlignment="Left" Margin="43,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="116" RenderTransformOrigin="-0.049,0.685"><Run Language="ko-kr" /></TextBlock>
@@ -55,7 +55,7 @@
                 <TextBlock x:Name="launcherCnt" Text="4" FontSize="16" HorizontalAlignment="Left" Margin="209,78,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="146" RenderTransformOrigin="-0.049,0.685"/>
 
                 <!--유도탄-->
-                <Ellipse HorizontalAlignment="Left" Margin="28,126,0,0" Fill="LightGreen" VerticalAlignment="Top" Height="30" Width="30"/>
+                <Ellipse x:Name="missileStatus" HorizontalAlignment="Left" Margin="28,126,0,0" Fill="DarkGreen" VerticalAlignment="Top" Height="30" Width="30"/>
                 <TextBlock FontSize="20" Text="유도탄" HorizontalAlignment="Left" Margin="66,126,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="30" Width="92"/>
                 <TextBlock FontSize="16" Text="좌표" HorizontalAlignment="Left" Margin="87,163,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
                 <TextBlock FontSize="16" Text="현재속도(마하)" HorizontalAlignment="Left" Margin="50,189,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="18" Width="118" RenderTransformOrigin="-0.049,0.685"/>
@@ -68,7 +68,7 @@
 
 
                 <!--레이다-->
-                <Ellipse HorizontalAlignment="Left" Margin="28,232,0,0" Fill="LightGreen" Height="30" Width="30" VerticalAlignment="Top" RenderTransformOrigin="0.567,3.135"/>
+                <Ellipse x:Name="radarStatus" HorizontalAlignment="Left" Margin="28,232,0,0" Fill="DarkGreen" Height="30" Width="30" VerticalAlignment="Top" RenderTransformOrigin="0.567,3.135"/>
                 <TextBlock Text="레이다" FontSize="20" HorizontalAlignment="Left" Margin="69,232,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="30" Width="92"/>
                 <TextBlock Text="좌표" FontSize="16" HorizontalAlignment="Left" Margin="86,270,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
                 <TextBlock Text="탐지범위(km)" FontSize="16" HorizontalAlignment="Left" Margin="52,292,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="105" RenderTransformOrigin="-0.049,0.685"/>
@@ -76,7 +76,7 @@
                 <TextBlock x:Name="radarRange" Text="200" FontSize="16" HorizontalAlignment="Left" Margin="209,292,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
 
                 <!--공중위협-->
-                <Ellipse HorizontalAlignment="Left" Margin="29,335,0,0" Fill="LightGreen" VerticalAlignment="Top" Height="30" Width="30" RenderTransformOrigin="0.567,3.135"/>
+                <Ellipse x:Name="enemyStatus" HorizontalAlignment="Left" Margin="29,335,0,0" Fill="DarkGreen" VerticalAlignment="Top" Height="30" Width="30" RenderTransformOrigin="0.567,3.135"/>
                 <TextBlock Text="공중위협"  FontSize="20" HorizontalAlignment="Left" Margin="69,335,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="30" Width="92"/>
                 <TextBlock Text="좌표" FontSize="16" HorizontalAlignment="Left" Margin="86,374,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
                 <TextBlock Text="종류" FontSize="16" HorizontalAlignment="Left" Margin="86,401,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
@@ -98,16 +98,11 @@
                 <!--공중위협 이동 테스트 버튼-->
                 <Button x:Name="btnMoveEnemyTest" Content="공중위협테스트" Width="80" Height="26" HorizontalAlignment="Left" Margin="255,339,0,0" VerticalAlignment="Top" Click="btnMoveEnemyTestClick"/>
 
-
-
                 <TextBlock FontSize="12" HorizontalAlignment="Left" Margin="27,481,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"><Run Language="ko-kr"/><Bold>모의기 연결상태</Bold></TextBlock>
                 <Ellipse HorizontalAlignment="Left" Margin="120,482,0,0" Fill="LightGreen" VerticalAlignment="Top" Height="16" Width="16" RenderTransformOrigin="0.567,3.135"/>
                 <TextBlock Text="정상" FontSize="12" HorizontalAlignment="Left" Margin="140,481,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="34" RenderTransformOrigin="-0.049,0.685"/>
                 <Ellipse HorizontalAlignment="Left" Margin="179,482,0,0" Fill="Red" VerticalAlignment="Top" Height="16" Width="16" RenderTransformOrigin="0.567,3.135"/>
                 <TextBlock Text="비정상" FontSize="12" HorizontalAlignment="Left" Margin="200,482,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="38" RenderTransformOrigin="-0.049,0.685"/>
-
-
-
 
                 <!--시나리오 OK 버튼 - 입력된 시나리오 값들을 ScenarioDeploy 메시지에 set-->
                 <Button x:Name="btnScnOk" Content="OK" Width="40" Height="26" HorizontalAlignment="Left" Margin="270,472,0,0" VerticalAlignment="Top" Click="btnScnOkClick"/>
@@ -120,7 +115,7 @@
             <Grid Grid.Column="1" Grid.Row="1">
                 <Button x:Name="btnScnDeploy" Content="모의 배포" Height="50" Margin="0,0,0,107" Click="btnScnDeployClick"/>
                 <Button x:Name="btnScnStart" Content="모의 시작" Height="50" Margin="0,50,0,57" Click="btnScnStartClick"/>
-                <Button x:Name="btnScnStop" Content="모의 중지" Height="50" Margin="0,100,0,7"/>
+                <Button x:Name="btnScnStop" Content="모의 중지" Height="50" Margin="0,100,0,7" Click="btnScnStopClick"/>
             </Grid>
             <!--3. 이벤트 로그 레이아웃-->
             <Grid Grid.Column="1" Grid.Row="2">

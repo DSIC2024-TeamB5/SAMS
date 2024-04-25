@@ -98,23 +98,47 @@ namespace WpfApplication1
 
                 if (MessageName == "SIM_STATUS")
                 {
-                    //모의기 연결 상태 표시 함수 호출 
+                    // 모의기 연결 상태 표시 함수 호출
+                    // ATS : 1, MSL : 2, ROS : 3, LOS : 4
+                    int SIM_KIND = (int)(icdNOM.getValue("SimulatorState").toUInt());
+                    
+                    if (SIM_KIND == 1) enemyStatus.Fill = new SolidColorBrush(Colors.LightGreen);
+                    else if (SIM_KIND == 2) missileStatus.Fill = new SolidColorBrush(Colors.LightGreen);
+                    else if (SIM_KIND == 3) radarStatus.Fill = new SolidColorBrush(Colors.LightGreen);
+                    else if (SIM_KIND == 4) launcherStatus.Fill = new SolidColorBrush(Colors.LightGreen);
 
                 }
                 else if (MessageName == "ROS_DETECTION")
                 {
                     //탐지 여부에 따라 발사가능 여부 조절 함수 호출
                     //IsDetected : 1 = 탐지됨, 2 = 탐지 안됨
+                    isDetected = (int)(icdNOM.getValue("IsDetected").toUInt());
+                    if (isDetected == 1) btnLaunch.IsEnabled = true;
+                    else if (isDetected == 2) btnLaunch.IsEnabled = false;
                 }
                 else if (MessageName == "MSL_POSITION")
-                { 
+                {
                     //미사일 정보 갱신
                     //IsShotDown : 1 = 격추안됨, 2 = 격추됨
-                    //격추된 경우 모의 중지 요청 송신
+                    // 격추된 경우 모의 중지 요청 송신
+                    float missileNx = (icdNOM.getValue("MissileCurX").toFloat());
+                    float missileNy = (icdNOM.getValue("MissileCurY").toFloat());
+                    isShotDown = (int)(icdNOM.getValue("IsShotDown").toUInt());
+
+                    if(isShotDown == 2)
+                    {
+                        Console.WriteLine(">> 격추에 성공하였습니다. 모의를 중지합니다.");
+                        scnStop();
+                    }
+
                 }
                 else if (MessageName == "ATS_POSITION")
                 {
                     //공중위협 정보 갱신
+                    float enemyNx = (icdNOM.getValue("EnemyCurX").toFloat());
+                    float enemyNy = (icdNOM.getValue("EnemyCurY").toFloat());
+
+                    moveEnemy(enemyNx, enemyNy);
                 }
             }
             else if (msg == UM_ReflectedNOM)
@@ -359,8 +383,8 @@ namespace WpfApplication1
 
         private void btnScnDeployClick(object sender, RoutedEventArgs e)
         {
-            Console.WriteLine(">> btnScnDeployClick() : ");
             Console.WriteLine("===================================");
+            Console.WriteLine(">> btnScnDeployClick() : ");
 
             NOMParser parser = new NOMParser();
             parser.nomFilePath = "GUI_NOM.xml";
@@ -392,6 +416,61 @@ namespace WpfApplication1
 
             NOMInfo nomInfo = new NOMInfo();
             nomInfo.MsgName = "SCN_DEPLOY";
+            nomInfo.MsgID = 1001;
+            nomInfo.MsgLen = byteSize;
+
+            IntPtr ptr = Marshal.AllocHGlobal(nomInfo.MsgLen);
+
+            Marshal.Copy(nomBytes, 0, ptr, nomInfo.MsgLen);
+            SendMsg(GUIConnObj, nomInfo, ptr);
+        }
+
+        private void btnScnStopClick(object sender, RoutedEventArgs e) 
+        {
+            Console.WriteLine("===================================");
+            Console.WriteLine(">> btnScnStopClick() : ");
+
+            NOMParser parser = new NOMParser();
+            parser.nomFilePath = "GUI_NOM.xml";
+            parser.parse();
+
+            NMessage icdMsg = parser.getMessageObject("SIM_CONTROL");
+            NOM startNOM = icdMsg.createNOMInstance();
+            startNOM.setValue("MessageId", new NUInteger(1002));
+            startNOM.setValue("MessageSize", new NUInteger(12));
+            startNOM.setValue("OperationType", new NUInteger(3));
+
+            int byteSize = 0;
+            byte[] nomBytes = startNOM.serialize(out byteSize);
+
+            NOMInfo nomInfo = new NOMInfo();
+            nomInfo.MsgName = "SIM_CONTROL";
+            nomInfo.MsgID = 1001;
+            nomInfo.MsgLen = byteSize;
+
+            IntPtr ptr = Marshal.AllocHGlobal(nomInfo.MsgLen);
+
+            Marshal.Copy(nomBytes, 0, ptr, nomInfo.MsgLen);
+            SendMsg(GUIConnObj, nomInfo, ptr);
+        }
+
+        private void scnStop()
+        {
+            NOMParser parser = new NOMParser();
+            parser.nomFilePath = "GUI_NOM.xml";
+            parser.parse();
+
+            NMessage icdMsg = parser.getMessageObject("SCN_CONTROL");
+            NOM startNOM = icdMsg.createNOMInstance();
+            startNOM.setValue("MessageId", new NUInteger(1002));
+            startNOM.setValue("MessageSize", new NUInteger(12));
+            startNOM.setValue("OperationType", new NUInteger(3));
+
+            int byteSize = 0;
+            byte[] nomBytes = startNOM.serialize(out byteSize);
+
+            NOMInfo nomInfo = new NOMInfo();
+            nomInfo.MsgName = "SCN_CONTROL";
             nomInfo.MsgID = 1001;
             nomInfo.MsgLen = byteSize;
 
@@ -502,8 +581,7 @@ namespace WpfApplication1
                 Console.WriteLine(">> 시나리오 배포 준비가 되었습니다. ");
 
                 // 임의로 true로 한거임 지우셈 나중에
-                enemyDetected = true;
-                btnLaunch.IsEnabled = true;
+                //btnLaunch.IsEnabled = true;
                 // 임의로 true로 한거임 지우셈 나중에
             }
             else
@@ -576,9 +654,8 @@ namespace WpfApplication1
         }
 
         // 유도탄, 공중위협 로직
-        static bool enemyDetected = false;      // 탐지 여부
-        static bool isLaunched = false;         // 발사 여부
-        static bool isShotDown = false;         // 격추 여부
+        static int isDetected;         // 탐지 여부
+        static int isShotDown;         // 격추 여부
 
         /* ROS_DETECTION 오면 enemyDetected 를 true로 변경 */
         /* ROS_DETECTION 오면 btnLaunch 를 true로 변경 */
