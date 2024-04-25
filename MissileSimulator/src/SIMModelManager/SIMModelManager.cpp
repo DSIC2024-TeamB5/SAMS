@@ -1,6 +1,11 @@
 #include "SIMModelManager.h"
 
 void SIMModelManager::scnDeploy(shared_ptr<NOM> nomMsg) {
+  delete missile;
+  delete mData;
+  mData = new SharedData();
+  missile = new SIMModel(mData);
+
   float mslX = nomMsg->getValue(_T("MissileInitX"))->toFloat();
   float mslY = nomMsg->getValue(_T("MissileInitY"))->toFloat();
   float targetX = nomMsg->getValue(_T("EnemyInitX"))->toFloat();
@@ -44,8 +49,15 @@ void SIMModelManager::atsPosition(shared_ptr<NOM> nomMsg) {
   float y = nomMsg->getValue(_T("EnemyCurY"))->toFloat();
   x *= 1000;
   y *= 1000;
+
   missile->updateTargetInfo(x, y);
-  notifyStatus();
+  missile->updateMissilePosition();
+
+  tcout << "msl x : " << mData->x << " msl y : " << mData->y << "\n";
+  tcout << "ats x : " << x << " ats y : " << y << "\n";
+
+  notifyMissileInfo();
+  //notifyStatus();
 }
 
 void SIMModelManager::notifyStatus() {
