@@ -62,6 +62,7 @@ namespace WpfApplication1
             return new WindowInteropHelper(window).Handle;
         }
 
+        static bool isWritedLog = false;
         //WndProc 함수 등록하기
         protected override void OnSourceInitialized(EventArgs e)
         {
@@ -112,7 +113,7 @@ namespace WpfApplication1
                 {
                     //탐지 여부에 따라 발사가능 여부 조절 함수 호출
                     //IsDetected : 1 = 탐지됨, 2 = 탐지 안됨
-                    bool isWritedLog = false;
+                    
                     isDetected = (int)(icdNOM.getValue("IsDetected").toUInt());
                     if (isDetected == 1)
                     {
