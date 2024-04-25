@@ -450,37 +450,16 @@ namespace WpfApplication1
 
         private void btnScnStopClick(object sender, RoutedEventArgs e) 
         {
-            writeEventLog(10);
             Console.WriteLine("===================================");
             Console.WriteLine(">> btnScnStopClick() : ");
 
-            NOMParser parser = new NOMParser();
-            parser.nomFilePath = "GUI_NOM.xml";
-            parser.parse();
-
-            NMessage icdMsg = parser.getMessageObject("SIM_CONTROL");
-            NOM startNOM = icdMsg.createNOMInstance();
-            startNOM.setValue("MessageId", new NUInteger(1002));
-            startNOM.setValue("MessageSize", new NUInteger(12));
-            startNOM.setValue("OperationType", new NUInteger(3));
-
-            int byteSize = 0;
-            byte[] nomBytes = startNOM.serialize(out byteSize);
-
-            NOMInfo nomInfo = new NOMInfo();
-            nomInfo.MsgName = "SIM_CONTROL";
-            nomInfo.MsgID = 1001;
-            nomInfo.MsgLen = byteSize;
-
-            IntPtr ptr = Marshal.AllocHGlobal(nomInfo.MsgLen);
-
-            Marshal.Copy(nomBytes, 0, ptr, nomInfo.MsgLen);
-            SendMsg(GUIConnObj, nomInfo, ptr);
+            scnStop();
         }
 
         private void scnStop()
         {
             writeEventLog(10);
+            clearFiled();
             NOMParser parser = new NOMParser();
             parser.nomFilePath = "GUI_NOM.xml";
             parser.parse();
@@ -507,7 +486,7 @@ namespace WpfApplication1
 
         private void setLauncherPos(float x, float y)
         {
-            launcherPos.Text = x + ", " + y;
+            launcherPos.Text = x.ToString("N2") + ", " + y.ToString("N2");
             
             s_launcherX = x;
             s_launcherY = y;
@@ -516,20 +495,20 @@ namespace WpfApplication1
         }
         private void setMissilePos(float x, float y)
         {
-            missilePos.Text = x + ", " + y;
+            missilePos.Text = x.ToString("N2") + ", " + y.ToString("N2");
             s_missileX = x;
             s_missileY = y;
         }
         private void setRadarPos(float x, float y)
         {
-            radarPos.Text = x + ", " + y;
+            radarPos.Text = x.ToString("N2") + ", " + y.ToString("N2");
 
             s_radarX = x;
             s_radarY = y;
         }
         private void setEnemyStartPos(float x, float y)
         {
-            enemyPos.Text = x + ", " + y;
+            enemyPos.Text = x.ToString("N2") + ", " + y.ToString("N2");
             s_enemySx = x;
             s_enemySy = y;
         }
@@ -619,6 +598,11 @@ namespace WpfApplication1
         {
             Console.WriteLine(">> btnScnClearClick() : ");
             Console.WriteLine("===================================");
+
+            clearFiled();
+        }
+        private void clearFiled()
+        {
             // 발사대 필드
             s_launcherX = default;
             s_launcherY = default;
@@ -646,15 +630,18 @@ namespace WpfApplication1
             missilePos.Text = initText;
             radarPos.Text = initText;
             enemyPos.Text = initText;
-
             // 공중위협 초기 - 타깃 사이 선 삭제, 각종 이미지 다시 추가
             allImgSetVisibilityHidden();
             mapGrid.Children.Clear();
             allImgSetToMapGrid();
+            // 모의기 연결상태등 초기화
+            enemyStatus.Fill = new SolidColorBrush(Colors.DarkGreen);
+            missileStatus.Fill = new SolidColorBrush(Colors.DarkGreen);
+            radarStatus.Fill = new SolidColorBrush(Colors.DarkGreen);
+            launcherStatus.Fill = new SolidColorBrush(Colors.DarkGreen);
             // 콤보박스 초기화
-
-
         }
+
         private void allImgSetVisibilityHidden()
         {
             img_launcher.Visibility = Visibility.Hidden;
@@ -703,6 +690,7 @@ namespace WpfApplication1
         {
             writeEventLog(7);
             writeEventLog(8);
+            s_missileStock--;
             Console.WriteLine(">> btnLaunchClick() : ");
             Console.WriteLine("===================================");
 
