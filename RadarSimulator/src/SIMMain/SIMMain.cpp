@@ -67,8 +67,13 @@ int main()
 
 		tstring dllPath = iniHandler.readString(dllIndex, _T("PATH"));
 
+<<<<<<< HEAD
 		(nIntegrator->getUserManager(dllPath))->stop();
 	}
+=======
+			(nIntegrator->getUserManager(dllPath))->stop();
+		}
+>>>>>>> dev
 
 	for (unsigned int cnt = 1; cnt <= numOfComponents; cnt++)
 	{

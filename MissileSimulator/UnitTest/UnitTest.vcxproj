@@ -99,7 +99,10 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
+<<<<<<< HEAD
     <ClCompile Include="..\src\SIMModelManager\SIMModel.cpp" />
+=======
+>>>>>>> dev
     <ClCompile Include="test.cpp" />
   </ItemGroup>
   <ItemGroup>

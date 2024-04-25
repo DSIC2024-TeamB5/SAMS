@@ -2,8 +2,7 @@
 #include <map>
 #include <nFramework/util/util.h>
 
-class CommMessageHandler
-{
+class CommMessageHandler {
 public:
 	CommMessageHandler();
 	~CommMessageHandler();
@@ -18,4 +17,3 @@ private:
 private:
 	map<unsigned int, tstring> IDNameTable;
 };
-

@@ -1,4 +1,5 @@
 #include "SIMModel.h"
+<<<<<<< HEAD
 #include <math.h>
 #include <iostream>
 
@@ -99,3 +100,21 @@ void SIMModel::updateThreatPosition()
 
 	std::cout << "Threat position : (" << currentX << ", " << currentY << ")" << std::endl;
 }
+=======
+#include <iostream>
+
+SIMModel::SIMModel(SharedData* data) : mData(data) {}
+
+SIMModel::~SIMModel() { /*delete mData;*/ }
+
+void SIMModel::setPosition(float x, float y) {
+  mData->x = x;
+  mData->y = y;
+}
+
+void SIMModel::launchMissile() {
+  if (mData->mslCount <= 0) throw("missile count under 0");
+
+  mData->mslCount--;
+}
+>>>>>>> dev

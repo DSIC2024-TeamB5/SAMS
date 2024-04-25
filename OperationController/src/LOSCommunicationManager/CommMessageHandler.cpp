@@ -17,7 +17,18 @@ void
 CommMessageHandler::initialize()
 {
 	// if need be, write your code
+<<<<<<<< HEAD:OperationController/src/LOSCommunicationManager/CommMessageHandler.cpp
 	setIDNameTable(1003, _T("SIM_STATUS"));
+========
+	setIDNameTable(1001, _T("SCN_DEPLOY"));
+	setIDNameTable(1002, _T("SIM_CONTROL"));
+	setIDNameTable(1003, _T("SIM_STATUS"));
+	setIDNameTable(1004, _T("ROS_DETECTION"));
+	setIDNameTable(1005, _T("MSL_LAUNCH"));
+	setIDNameTable(1006, _T("MSL_POSITION"));
+	setIDNameTable(1007, _T("ATS_SHOT_DOWN"));
+	setIDNameTable(1008, _T("ATS_POSITION"));
+>>>>>>>> dev:EnemySimulator/src/UDPManager/CommMessageHandler.cpp
 }
 
 void

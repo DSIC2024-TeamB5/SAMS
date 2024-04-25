@@ -1,14 +1,18 @@
+<<<<<<<< HEAD:OperationController/src/LOSCommunicationManager/LOSCommunicationManager.cpp
 #include "LOSCommunicationManager.h"
+========
+#include "UDPManager.h"
+>>>>>>>> dev:EnemySimulator/src/UDPManager/UDPManager.cpp
 
 /************************************************************************
 	Constructor / Destructor
 ************************************************************************/
-UDPCommunicationManager::UDPCommunicationManager(void)
+UDPManager::UDPManager(void)
 {
 	init();
 }
 
-UDPCommunicationManager::~UDPCommunicationManager(void)
+UDPManager::~UDPManager(void)
 {
 	release();
 }
@@ -17,9 +21,13 @@ UDPCommunicationManager::~UDPCommunicationManager(void)
 	initialize / release
 ************************************************************************/
 void
-UDPCommunicationManager::init()
+UDPManager::init()
 {
+<<<<<<<< HEAD:OperationController/src/LOSCommunicationManager/LOSCommunicationManager.cpp
 	setUserName(_T("LOSCommunicationManager"));
+========
+	setUserName(_T("UDPManager"));
+>>>>>>>> dev:EnemySimulator/src/UDPManager/UDPManager.cpp
 
 	// by contract
 	mec = new MECComponent;
@@ -32,7 +40,7 @@ UDPCommunicationManager::init()
 }
 
 void
-UDPCommunicationManager::release()
+UDPManager::release()
 {
 	delete commConfig;
 	delete commInterface;
@@ -46,7 +54,7 @@ UDPCommunicationManager::release()
 	Inherit Function
 ************************************************************************/
 shared_ptr<NOM>
-UDPCommunicationManager::registerMsg(tstring msgName)
+UDPManager::registerMsg(tstring msgName)
 {
 	shared_ptr<NOM> nomMsg = mec->registerMsg(msgName);
 	registeredMsg.insert(pair<unsigned int, shared_ptr<NOM>>(nomMsg->getInstanceID(), nomMsg));
@@ -55,19 +63,19 @@ UDPCommunicationManager::registerMsg(tstring msgName)
 }
 
 void
-UDPCommunicationManager::discoverMsg(shared_ptr<NOM> nomMsg)
+UDPManager::discoverMsg(shared_ptr<NOM> nomMsg)
 {
 	discoveredMsg.insert(pair<unsigned int, shared_ptr<NOM>>(nomMsg->getInstanceID(), nomMsg));
 }
 
 void
-UDPCommunicationManager::updateMsg(shared_ptr<NOM> nomMsg)
+UDPManager::updateMsg(shared_ptr<NOM> nomMsg)
 {
 	mec->updateMsg(nomMsg);
 }
 
 void
-UDPCommunicationManager::reflectMsg(shared_ptr<NOM> nomMsg)
+UDPManager::reflectMsg(shared_ptr<NOM> nomMsg)
 {
 	// if need be, write your code
 
@@ -75,53 +83,53 @@ UDPCommunicationManager::reflectMsg(shared_ptr<NOM> nomMsg)
 }
 
 void
-UDPCommunicationManager::deleteMsg(shared_ptr<NOM> nomMsg)
+UDPManager::deleteMsg(shared_ptr<NOM> nomMsg)
 {
 	mec->deleteMsg(nomMsg);
 	registeredMsg.erase(nomMsg->getInstanceID());
 }
 
 void
-UDPCommunicationManager::removeMsg(shared_ptr<NOM> nomMsg)
+UDPManager::removeMsg(shared_ptr<NOM> nomMsg)
 {
 	discoveredMsg.erase(nomMsg->getInstanceID());
 }
 
 void
-UDPCommunicationManager::sendMsg(shared_ptr<NOM> nomMsg)
+UDPManager::sendMsg(shared_ptr<NOM> nomMsg)
 {
 	mec->sendMsg(nomMsg);
 }
 
 void
-UDPCommunicationManager::recvMsg(shared_ptr<NOM> nomMsg)
+UDPManager::recvMsg(shared_ptr<NOM> nomMsg)
 {
 	commInterface->sendCommMsg(nomMsg);
 }
 
 void
-UDPCommunicationManager::setUserName(tstring userName)
+UDPManager::setUserName(tstring userName)
 {
 	name = userName; 
 }
 
 tstring
-UDPCommunicationManager::getUserName()
+UDPManager::getUserName()
 {
 	return name;
 }
 
 void
-UDPCommunicationManager::setData(void* data)
+UDPManager::setData(void* data)
 {
 	// if need be, write your code
 }
 
 bool
-UDPCommunicationManager::start()
+UDPManager::start()
 {
 	commInterface->setMEBComponent(meb);
-	MessageProcessor msgProcessor = bind(&UDPCommunicationManager::processRecvMessage, this, placeholders::_1, placeholders::_2);
+	MessageProcessor msgProcessor = bind(&UDPManager::processRecvMessage, this, placeholders::_1, placeholders::_2);
 	commConfig->setMsgProcessor(msgProcessor);
 	commInterface->initNetEnv(commConfig);
 
@@ -129,21 +137,21 @@ UDPCommunicationManager::start()
 }
 
 bool
-UDPCommunicationManager::stop()
+UDPManager::stop()
 {
 	commInterface->releaseNetEnv(commConfig);
 	return true;
 }
 
 void
-UDPCommunicationManager::setMEBComponent(IMEBComponent* realMEB)
+UDPManager::setMEBComponent(IMEBComponent* realMEB)
 {
 	meb = realMEB;
 	mec->setMEB(meb);
 }
 
 void
-UDPCommunicationManager::processRecvMessage(unsigned char* data, int size)
+UDPManager::processRecvMessage(unsigned char* data, int size)
 {
 	auto IDSize = commConfig->getHeaderIDSize();
 	auto IDPos = commConfig->getHeaderIDPos();
@@ -151,7 +159,11 @@ UDPCommunicationManager::processRecvMessage(unsigned char* data, int size)
 	unsigned int tmpMsgID;
 	memcpy(&tmpMsgID, data + IDPos, IDSize);
 	auto msgID = ntohl(tmpMsgID);
+<<<<<<<< HEAD:OperationController/src/LOSCommunicationManager/LOSCommunicationManager.cpp
 	tcout << _T("LOS::::") << msgID << _T("\n");
+========
+
+>>>>>>>> dev:EnemySimulator/src/UDPManager/UDPManager.cpp
 	auto nomMsg = meb->getNOMInstance(name, commMsgHandler.getMsgName(msgID));
 
 	if (nomMsg.get())
@@ -180,7 +192,7 @@ UDPCommunicationManager::processRecvMessage(unsigned char* data, int size)
 extern "C" BASEMGRDLL_API
 BaseManager* createObject()
 {
-	return new UDPCommunicationManager;
+	return new UDPManager;
 }
 
 extern "C" BASEMGRDLL_API

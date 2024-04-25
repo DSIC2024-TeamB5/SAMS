@@ -48,4 +48,11 @@ binx86Debug
 # Executables
 *.exe
 *.out
+<<<<<<< HEAD
 *.app
+=======
+*.app
+
+# gtest package
+**/packages/
+>>>>>>> dev

@@ -3,11 +3,11 @@
 #include <nFramework/comm/NCommInterface.h>
 #include "CommMessageHandler.h"
 
-class BASEMGRDLL_API UDPCommunicationManager : public BaseManager
+class BASEMGRDLL_API UDPManager : public BaseManager
 {
 public:
-	UDPCommunicationManager(void);
-	~UDPCommunicationManager(void);
+	UDPManager(void);
+	~UDPManager(void);
 
 public:
 	// inherited from the BaseManager class

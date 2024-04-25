@@ -21,16 +21,30 @@
   <ItemGroup>
     <ClCompile Include="ATSCommunicationManager.cpp" />
     <ClCompile Include="CommMessageHandler.cpp" />
+<<<<<<<< HEAD:OperationController/src/ATSCommunicationManager/ATSCommunicationManager.vcxproj
+========
+    <ClCompile Include="UDPManager.cpp" />
+>>>>>>>> dev:EnemySimulator/src/UDPManager/UDPManager.vcxproj
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ATSCommunicationManager.h" />
     <ClInclude Include="CommMessageHandler.h" />
+<<<<<<<< HEAD:OperationController/src/ATSCommunicationManager/ATSCommunicationManager.vcxproj
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\bin\ATSCommunicationManager\CommLinkInfo.ini" />
   </ItemGroup>
   <ItemGroup>
     <Xml Include="..\..\bin\ATSCommunicationManager\ATSCommunicationManager.xml" />
+========
+    <ClInclude Include="UDPManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\bin\UDPManager\CommLinkInfo.ini" />
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\bin\UDPManager\UDPManager.xml" />
+>>>>>>>> dev:EnemySimulator/src/UDPManager/UDPManager.vcxproj
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

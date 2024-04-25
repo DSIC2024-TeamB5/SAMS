@@ -4,9 +4,12 @@
     <ClCompile Include="test.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="..\src\SIMModelManager\SIMModel.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+=======
+>>>>>>> dev
   </ItemGroup>
   <ItemGroup>
     <Filter Include="헤더 파일">
