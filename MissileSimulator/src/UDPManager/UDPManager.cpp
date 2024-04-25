@@ -52,7 +52,6 @@ void UDPManager::updateMsg(shared_ptr<NOM> nomMsg) { mec->updateMsg(nomMsg); }
 
 void UDPManager::reflectMsg(shared_ptr<NOM> nomMsg) {
   // if need be, write your code
-
   commInterface->sendCommMsg(nomMsg);
 }
 
@@ -112,16 +111,12 @@ void UDPManager::processRecvMessage(unsigned char* data, int size) {
 
   if (nomMsg.get()) {
     if (nomMsg->getType() == NOM_TYPE_OBJECT) {
-      tcout << _T("Model recv::") << data << size << endl;
-
-      nomMsg->deserialize(data, 16);  // size
+      nomMsg->deserialize(data, size);
       this->updateMsg(nomMsg);
     } else {
       auto nomMsgCP = nomMsg->clone();
       nomMsgCP->deserialize(data, size);
       this->sendMsg(nomMsgCP);
-
-      commInterface->sendCommMsg(nomMsgCP);
     }
   } else {
     tcerr << _T("not defined message") << endl;
@@ -131,8 +126,8 @@ void UDPManager::processRecvMessage(unsigned char* data, int size) {
 /************************************************************************
         Export Function
 ************************************************************************/
-extern "C" BASEMGRDLL_API BaseManager* createObject() { return new UDPManager; }
+extern "C" BASEMGRDLL_API BaseManager *createObject() { return new UDPManager; }
 
-extern "C" BASEMGRDLL_API void deleteObject(BaseManager* userManager) {
+extern "C" BASEMGRDLL_API void deleteObject(BaseManager *userManager) {
   delete userManager;
 }
