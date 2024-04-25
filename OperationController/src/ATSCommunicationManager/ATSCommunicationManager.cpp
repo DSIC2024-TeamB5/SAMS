@@ -98,8 +98,8 @@ void
 UDPCommunicationManager::recvMsg(shared_ptr<NOM> nomMsg)
 {
 	// if need be, write your code
-  tcout << this->getUserName() << _T("::") << nomMsg->getName()
-        << _T(":: recv ----> sent through UDP") << endl;
+ // tcout << this->getUserName() << _T("::") << nomMsg->getName()
+    //    << _T(":: recv ----> sent through UDP") << endl;
 	commInterface->sendCommMsg(nomMsg);
 }
 
@@ -155,7 +155,7 @@ UDPCommunicationManager::processRecvMessage(unsigned char* data, int size)
 	unsigned int tmpMsgID;
 	memcpy(&tmpMsgID, data + IDPos, IDSize);
 	auto msgID = ntohl(tmpMsgID);
-    tcout << this->getUserName() << _T("::::") << msgID << endl;
+    //tcout << this->getUserName() << _T("::::") << msgID << endl;
 	auto nomMsg = meb->getNOMInstance(name, commMsgHandler.getMsgName(msgID));
 	
 	if (nomMsg.get())

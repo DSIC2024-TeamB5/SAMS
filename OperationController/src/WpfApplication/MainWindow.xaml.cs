@@ -666,6 +666,28 @@ namespace WpfApplication1
             Console.WriteLine(">> btnLaunchClick() : ");
             Console.WriteLine("===================================");
 
+            NOMParser parser = new NOMParser();
+            parser.nomFilePath = "GUI_NOM.xml";
+            parser.parse();
+
+            NMessage icdMsg = parser.getMessageObject("MSL_LAUNCH");
+            NOM startNOM = icdMsg.createNOMInstance();
+            startNOM.setValue("MessageId", new NUInteger(1005));
+            startNOM.setValue("MessageSize", new NUInteger(8));
+
+            int byteSize = 0;
+            byte[] nomBytes = startNOM.serialize(out byteSize);
+
+            NOMInfo nomInfo = new NOMInfo();
+            nomInfo.MsgName = "MSL_LAUNCH";
+            nomInfo.MsgID = 1005;
+            nomInfo.MsgLen = byteSize;
+
+            IntPtr ptr = Marshal.AllocHGlobal(nomInfo.MsgLen);
+
+            Marshal.Copy(nomBytes, 0, ptr, nomInfo.MsgLen);
+            SendMsg(GUIConnObj, nomInfo, ptr);
+
             // 미사일 위치 조정 및 display
             img_missile.Margin = new System.Windows.Thickness { Left = s_missileX, Top = s_missileY };
             img_missile.Visibility = Visibility.Visible;
