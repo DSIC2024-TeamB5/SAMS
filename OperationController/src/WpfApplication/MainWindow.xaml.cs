@@ -681,6 +681,30 @@ namespace WpfApplication1
             // 공중위협 위치 조정 및 display
             img_enemyE.Margin = new System.Windows.Thickness { Left = s_enemySx, Top = s_enemySy };
             img_enemyE.Visibility = Visibility.Visible;
+
+            NOMParser parser = new NOMParser();
+            parser.nomFilePath = "GUI_NOM.xml";
+            parser.parse();
+
+            NMessage icdMsg = parser.getMessageObject("SIM_CONTROL");
+            NOM startNOM = icdMsg.createNOMInstance();
+            startNOM.setValue("MessageId", new NUInteger(1002));
+            startNOM.setValue("MessageSize", new NUInteger(12));
+            startNOM.setValue("OperationType", new NUInteger(1));
+
+            int byteSize = 0;
+            byte[] nomBytes = startNOM.serialize(out byteSize);
+
+            NOMInfo nomInfo = new NOMInfo();
+            nomInfo.MsgName = "SIM_CONTROL";
+            nomInfo.MsgID = 1002;
+            nomInfo.MsgLen = byteSize;
+
+            IntPtr ptr = Marshal.AllocHGlobal(nomInfo.MsgLen);
+
+            Marshal.Copy(nomBytes, 0, ptr, nomInfo.MsgLen);
+            SendMsg(GUIConnObj, nomInfo, ptr);
+
             Console.WriteLine(">> s_enemySx, s_enemySy : " + s_enemySx + ", " + s_enemySy);
             Console.WriteLine("===================================");
         }
