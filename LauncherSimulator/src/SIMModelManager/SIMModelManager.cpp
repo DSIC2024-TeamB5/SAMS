@@ -4,6 +4,7 @@ void SIMModelManager::scnDeploy(shared_ptr<NOM> nomMsg) {
   int x = nomMsg->getValue(_T("LauncherInitX"))->toUInt();
   int y = nomMsg->getValue(_T("LauncherInitY"))->toUInt();
 
+  mData->mslCount = 4;
   mLauncher->setPosition(x, y);
   notifyStatus();
 }
