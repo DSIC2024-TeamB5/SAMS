@@ -147,12 +147,18 @@ namespace WpfApplication1
                 }
                 else if (MessageName == "ATS_POSITION")
                 {
-                    //공중위협 정보 갱신
+                    // 공중위협 정보 갱신
                     float enemyNx = (icdNOM.getValue("EnemyCurX").toFloat());
                     float enemyNy = (icdNOM.getValue("EnemyCurY").toFloat());
-                    //Console.WriteLine("현재 좌표 =(" + s_enemySx + ", " + s_enemySy + ")");
+                    
                     moveEnemy(enemyNx, enemyNy);
-                    //Console.WriteLine("다음 좌표 =(" + s_enemySx + ", " + s_enemySy + ")");
+                    
+                    // 격추 실패 여부
+                    if (isEnemyDeparture(enemyNx, enemyNy))
+                    {
+                        writeEventLog(11);
+                        scnStop();
+                    }
                 }
             }
             else if (msg == UM_ReflectedNOM)
@@ -804,6 +810,13 @@ namespace WpfApplication1
            
         }
 
+        /* 격추 실패 판단 */
+        private bool isEnemyDeparture(float enemyX, float enemyY)
+        {
+            return isShotDown == 1 && enemyX == s_enemyTx && enemyY == s_enemyTy;
+        }
+
+        /* 상태창 업데이트 */
         private void updateStatus(float x, float y, int option)
         {
             if (option == 1)
