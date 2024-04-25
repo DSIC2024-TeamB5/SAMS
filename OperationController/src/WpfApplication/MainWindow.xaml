@@ -31,6 +31,7 @@
             <Image x:Name="img_enemyT" Visibility="Hidden" HorizontalAlignment="Left" Height="35" Margin="0,0,0,0" VerticalAlignment="Top" Width="25" Stretch="Fill" Source="/4_공중위협타겟.png"/>
             <Image x:Name="img_enemyE" Visibility="Hidden" HorizontalAlignment="Left" Height="50" Margin="0,0,0,0" VerticalAlignment="Top" Width="50" Stretch="Fill" Source="/5_공중위협객체.png"/>
             <Image x:Name="img_missile" Visibility="Hidden" HorizontalAlignment="Left" Height="50" Margin="0,0,0,0" VerticalAlignment="Top" Width="50" Stretch="Fill" Source="/6_유도탄미사일.png"/>
+            <Ellipse x:Name="img_radar_range" Height="400" Width="400" Fill="Gray" Opacity="0.7" Visibility="Hidden" HorizontalAlignment="Left" VerticalAlignment="Top"/>
 
             <!--8. 각 객체 범례-->
 

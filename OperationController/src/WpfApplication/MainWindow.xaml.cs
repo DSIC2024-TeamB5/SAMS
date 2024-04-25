@@ -138,7 +138,10 @@ namespace WpfApplication1
                     float enemyNx = (icdNOM.getValue("EnemyCurX").toFloat());
                     float enemyNy = (icdNOM.getValue("EnemyCurY").toFloat());
 
+                    Console.WriteLine("현재 좌표 =(" + s_enemySx + ", " + s_enemySy + ")");
                     moveEnemy(enemyNx, enemyNy);
+                    Console.WriteLine("다음 좌표 =(" + s_enemySx + ", " + s_enemySy + ")");
+
                 }
             }
             else if (msg == UM_ReflectedNOM)
@@ -579,7 +582,9 @@ namespace WpfApplication1
                 // 모두 값이 채워져 있으면 SCN_DEPLOY에 setValue.
                 // 여기서 SCN_DEPLOY 에 setValue
                 Console.WriteLine(">> 시나리오 배포 준비가 되었습니다. ");
-
+                Console.WriteLine("===================================");
+                img_radar_range.Visibility = Visibility.Visible;
+                img_radar_range.Margin = new System.Windows.Thickness { Left = s_radarX - 200, Top = s_radarY - 200 };
                 // 임의로 true로 한거임 지우셈 나중에
                 //btnLaunch.IsEnabled = true;
                 // 임의로 true로 한거임 지우셈 나중에
@@ -621,13 +626,28 @@ namespace WpfApplication1
             missilePos.Text = initText;
             radarPos.Text = initText;
             enemyPos.Text = initText;
-            
+
+            // 공중위협 초기 - 타깃 사이 선 삭제, 각종 이미지 다시 추가
+            allImgSetVisibilityHidden();
+            mapGrid.Children.Clear();
+            allImgSetToMapGrid();
+            // 콤보박스 초기화
+
+
+        }
+        private void allImgSetVisibilityHidden()
+        {
             img_launcher.Visibility = Visibility.Hidden;
             img_radar.Visibility = Visibility.Hidden;
             img_enemyS.Visibility = Visibility.Hidden;
             img_enemyT.Visibility = Visibility.Hidden;
-            // 공중위협 초기 - 타깃 사이 선 삭제, 각종 이미지 다시 추가
-            mapGrid.Children.Clear();
+            img_enemyE.Visibility = Visibility.Hidden;
+            img_missile.Visibility = Visibility.Hidden;
+            img_radar_range.Visibility = Visibility.Hidden;
+        }
+
+        private void allImgSetToMapGrid()
+        {
             mapGrid.Children.Add(img_map);
             mapGrid.Children.Add(img_launcher);
             mapGrid.Children.Add(img_radar);
@@ -635,9 +655,7 @@ namespace WpfApplication1
             mapGrid.Children.Add(img_enemyT);
             mapGrid.Children.Add(img_enemyE);
             mapGrid.Children.Add(img_missile);
-            // 콤보박스 초기화
-
-
+            mapGrid.Children.Add(img_radar_range);
         }
 
         private bool isAllCheckedStatus()
@@ -656,6 +674,7 @@ namespace WpfApplication1
         // 유도탄, 공중위협 로직
         static int isDetected;         // 탐지 여부
         static int isShotDown;         // 격추 여부
+        static int MISSILE_ENEMY_MARGIN = 25;
 
         /* ROS_DETECTION 오면 enemyDetected 를 true로 변경 */
         /* ROS_DETECTION 오면 btnLaunch 를 true로 변경 */
@@ -666,7 +685,7 @@ namespace WpfApplication1
             Console.WriteLine("===================================");
 
             // 미사일 위치 조정 및 display
-            img_missile.Margin = new System.Windows.Thickness { Left = s_missileX, Top = s_missileY };
+            img_missile.Margin = new System.Windows.Thickness { Left = s_missileX - MISSILE_ENEMY_MARGIN, Top = s_missileY - MISSILE_ENEMY_MARGIN };
             img_missile.Visibility = Visibility.Visible;
             Console.WriteLine(">> s_missileX, s_missileY : " + s_missileX + ", " + s_missileY);
             Console.WriteLine("===================================");
@@ -679,7 +698,7 @@ namespace WpfApplication1
             Console.WriteLine("===================================");
 
             // 공중위협 위치 조정 및 display
-            img_enemyE.Margin = new System.Windows.Thickness { Left = s_enemySx, Top = s_enemySy };
+            img_enemyE.Margin = new System.Windows.Thickness { Left = s_enemySx - MISSILE_ENEMY_MARGIN, Top = s_enemySy - MISSILE_ENEMY_MARGIN };
             img_enemyE.Visibility = Visibility.Visible;
 
             NOMParser parser = new NOMParser();
@@ -720,7 +739,7 @@ namespace WpfApplication1
                 // 현재좌표(s_missileX, s_missileY) 점 찍기
                 drawPoint(s_missileX, s_missileY, nx, ny);
                 // 새로 넘어온 좌표로 이미지 이동시키기
-                img_missile.Margin = new System.Windows.Thickness { Left = nx, Top = ny };
+                img_missile.Margin = new System.Windows.Thickness { Left = nx - MISSILE_ENEMY_MARGIN, Top = ny - MISSILE_ENEMY_MARGIN };
                 // 다음 좌표로 갱신 
                 s_missileX = nx;
                 s_missileY = ny;
@@ -730,6 +749,7 @@ namespace WpfApplication1
             {
                 // 이벤트로그에 모의 중지됨을 전시
                 Console.WriteLine(">> 격추에 성공했습니다. 모의를 중지합니다  ");
+
             }
         }
         /* moveMissile 테스트 코드 */
@@ -757,13 +777,12 @@ namespace WpfApplication1
         /* ATS_POSITION 에 따라 이미지 이동 */
         private void moveEnemy(float x, float y)
         {
-            // 현재좌표(s_missileX, s_missileY) 점 찍기
             // 새로 넘어온 좌표로 이미지 이동시키기
             float nx = x;
             float ny = y;
             
             // 새로 넘어온 좌표로 이미지 이동시키기
-            img_enemyE.Margin = new System.Windows.Thickness { Left = nx, Top = ny };
+            img_enemyE.Margin = new System.Windows.Thickness { Left = nx - MISSILE_ENEMY_MARGIN, Top = ny - MISSILE_ENEMY_MARGIN };
             // 다음 좌표로 갱신 
             s_enemySx = nx;
             s_enemySy = ny;
