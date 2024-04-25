@@ -463,7 +463,7 @@ namespace WpfApplication1
             parser.nomFilePath = "GUI_NOM.xml";
             parser.parse();
 
-            NMessage icdMsg = parser.getMessageObject("SCN_CONTROL");
+            NMessage icdMsg = parser.getMessageObject("SIM_CONTROL");
             NOM startNOM = icdMsg.createNOMInstance();
             startNOM.setValue("MessageId", new NUInteger(1002));
             startNOM.setValue("MessageSize", new NUInteger(12));
@@ -473,7 +473,7 @@ namespace WpfApplication1
             byte[] nomBytes = startNOM.serialize(out byteSize);
 
             NOMInfo nomInfo = new NOMInfo();
-            nomInfo.MsgName = "SCN_CONTROL";
+            nomInfo.MsgName = "SIM_CONTROL";
             nomInfo.MsgID = 1002;
             nomInfo.MsgLen = byteSize;
 
