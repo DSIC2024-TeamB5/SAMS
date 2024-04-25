@@ -792,27 +792,6 @@ namespace WpfApplication1
 
             }
         }
-        /* moveMissile 테스트 코드 */
-        private void btnMoveMissileTestClick(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine(">> 미사일 이동 테스트 : ");
-            Console.WriteLine("===================================");
-
-            int cnt = 0;
-            float nx = s_missileX;
-            float ny = s_missileY;
-
-            while (cnt < 1000)
-            {
-                nx += 1;
-                ny += 1;
-
-                moveMissile(nx, ny, 1);
-
-                cnt++;
-                Console.WriteLine("[" + cnt + "]: (" + nx + ", " + ny + ")");
-            }
-        }
 
         /* ATS_POSITION 에 따라 이미지 이동 */
         private void moveEnemy(float x, float y)
@@ -827,27 +806,7 @@ namespace WpfApplication1
             s_enemySx = nx;
             s_enemySy = ny;
         }
-        /* moveMissile 테스트 코드 */
-        private void btnMoveEnemyTestClick(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine(">> 공중위협 이동 테스트 : ");
-            Console.WriteLine("===================================");
-
-            int cnt = 0;
-            float nx = s_enemySx;
-            float ny = s_enemySy;
-
-            while (cnt < 500)
-            {
-                nx += 1;
-                ny += 1;
-
-                moveEnemy(nx, ny);
-
-                cnt++;
-                Console.WriteLine("[" + cnt + "]: (" + nx + ", " + ny + ")");
-            }
-        }
+        
 
         /* 점 찍기 */
         private void drawPoint(float cx, float cy, float nx, float ny)

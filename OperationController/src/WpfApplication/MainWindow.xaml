@@ -64,10 +64,7 @@
                 <TextBlock x:Name="missileSpeed" Text="5" FontSize="16" HorizontalAlignment="Left" Margin="209,189,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"/>
                 <!--유도탄 발사 버튼-->
                 <Button x:Name="btnLaunch" Content="유도탄발사" IsEnabled="False" Width="80" Height="26" HorizontalAlignment="Center" Margin="0,127,0,0" VerticalAlignment="Top" Click="btnLaunchClick"/>
-                <!--유도탄 이동 테스트 버튼-->
-                <Button x:Name="btnMoveMissileTest" Content="유도탄테스트" Width="80" Height="26" HorizontalAlignment="Left" Margin="255,126,0,0" VerticalAlignment="Top" Click="btnMoveMissileTestClick"/>
-
-
+                
                 <!--레이다-->
                 <Ellipse x:Name="radarStatus" HorizontalAlignment="Left" Margin="28,232,0,0" Fill="DarkGreen" Height="30" Width="30" VerticalAlignment="Top" RenderTransformOrigin="0.567,3.135"/>
                 <TextBlock Text="레이다" FontSize="20" HorizontalAlignment="Left" Margin="69,232,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Height="30" Width="92"/>
@@ -96,9 +93,7 @@
                     <ComboBoxItem Name ="four" Content="4"/>
                     <ComboBoxItem Name ="five" Content="5"/>
                 </ComboBox>
-                <!--공중위협 이동 테스트 버튼-->
-                <Button x:Name="btnMoveEnemyTest" Content="공중위협테스트" Width="80" Height="26" HorizontalAlignment="Left" Margin="255,339,0,0" VerticalAlignment="Top" Click="btnMoveEnemyTestClick"/>
-
+                
                 <TextBlock FontSize="12" HorizontalAlignment="Left" Margin="27,481,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="92" RenderTransformOrigin="-0.049,0.685"><Run Language="ko-kr"/><Bold>모의기 연결상태</Bold></TextBlock>
                 <Ellipse HorizontalAlignment="Left" Margin="120,482,0,0" Fill="LightGreen" VerticalAlignment="Top" Height="16" Width="16" RenderTransformOrigin="0.567,3.135"/>
                 <TextBlock Text="정상" FontSize="12" HorizontalAlignment="Left" Margin="140,481,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="18" Width="34" RenderTransformOrigin="-0.049,0.685"/>
