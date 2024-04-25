@@ -45,3 +45,8 @@
 
 # gtest package
 **/packages/
+
+# doxygen
+**/html/
+**/latex/
+**.zip
