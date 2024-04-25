@@ -97,7 +97,8 @@ void
 UDPCommunicationManager::recvMsg(shared_ptr<NOM> nomMsg)
 {
 	// if need be, write your code
-	tcout << this->getUserName() << _T(":: recv ----> sent through UDP") << endl;
+  tcout << this->getUserName() << _T("::") << nomMsg->getName()
+        << _T(":: recv ----> sent through UDP") << endl;
 	commInterface->sendCommMsg(nomMsg);
 }
 
@@ -147,13 +148,13 @@ UDPCommunicationManager::setMEBComponent(IMEBComponent* realMEB)
 void
 UDPCommunicationManager::processRecvMessage(unsigned char* data, int size)
 {
-	auto IDSize = commConfig->getHeaderSize();
+	auto IDSize = commConfig->getHeaderIDSize();
 	auto IDPos = commConfig->getHeaderIDPos();
 
 	unsigned int tmpMsgID;
-	memcpy(&tmpMsgID, data + IDPos, IDPos);
+	memcpy(&tmpMsgID, data + IDPos, IDSize);
 	auto msgID = ntohl(tmpMsgID);
-        tcout << this->getUserName() << _T("::::") << msgID << endl;
+    tcout << this->getUserName() << _T("::::recvd") << msgID << endl;
 	auto nomMsg = meb->getNOMInstance(name, commMsgHandler.getMsgName(msgID));
 
 	if (nomMsg.get())

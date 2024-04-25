@@ -48,7 +48,7 @@
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="SimulatorState" dataType="UnsignedIntegerBE"/>
 		</NOM:interaction>
-		<NOM:interaction name="ROS_DETECTION" id="1004" sharing="Neither" orderType="Receive" alignment="false">
+		<NOM:interaction name="ROS_DETECTION" id="1004" sharing="Publish" orderType="Receive" alignment="false">
 			<NOM:parameter name="MessageId" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="MessageSize" dataType="UnsignedIntegerBE"/>
 			<NOM:parameter name="IsDetected" dataType="UnsignedIntegerBE"/>

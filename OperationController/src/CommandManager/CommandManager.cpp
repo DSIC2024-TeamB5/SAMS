@@ -99,6 +99,7 @@ CommandManager::recvMsg(shared_ptr<NOM> nomMsg)
         } 
 	else if (nomMsg->getName() == _T("MSL_LAUNCH"))
 	{
+          tcout << _T(":::::::::missileLaunched!:::::::::\n");
 		  if(!missileLaunched)
 	        missileLaunched = true;
 	} 
@@ -184,7 +185,7 @@ CommandManager::startSimulation()
 		function<void(void *)> periodicFunc;
 	    periodicFunc = std::bind(&CommandManager::sendPeriodically, this);
 		timerHandle = 0;
-		timerHandle = nTimer->addPeriodicTask(1000, periodicFunc);
+		timerHandle = nTimer->addPeriodicTask(100, periodicFunc);
 	}
 }
 

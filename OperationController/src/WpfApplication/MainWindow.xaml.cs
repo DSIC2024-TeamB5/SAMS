@@ -137,8 +137,9 @@ namespace WpfApplication1
                     //공중위협 정보 갱신
                     float enemyNx = (icdNOM.getValue("EnemyCurX").toFloat());
                     float enemyNy = (icdNOM.getValue("EnemyCurY").toFloat());
-
+                    //Console.WriteLine("현재 좌표 =(" + s_enemySx + ", " + s_enemySy + ")");
                     moveEnemy(enemyNx, enemyNy);
+                    //Console.WriteLine("다음 좌표 =(" + s_enemySx + ", " + s_enemySy + ")");
                 }
             }
             else if (msg == UM_ReflectedNOM)
