@@ -776,13 +776,12 @@ namespace WpfApplication1
             {
                 float nx = x;
                 float ny = y;
+
                 // 현재좌표(s_missileX, s_missileY) 점 찍기
                 drawPoint(s_missileX, s_missileY, nx, ny);
-                // 새로 넘어온 좌표로 이미지 이동시키기
-                img_missile.Margin = new System.Windows.Thickness { Left = nx - MISSILE_ENEMY_MARGIN, Top = ny - MISSILE_ENEMY_MARGIN };
-                // 다음 좌표로 갱신 
-                s_missileX = nx;
-                s_missileY = ny;
+                // 상태 업데이트
+                updateStatus(nx, ny, 1);
+                
             }
             // 격추 됐다면
             else if (isShotDown == 2)
@@ -799,12 +798,30 @@ namespace WpfApplication1
             // 새로 넘어온 좌표로 이미지 이동시키기
             float nx = x;
             float ny = y;
-            
-            // 새로 넘어온 좌표로 이미지 이동시키기
-            img_enemyE.Margin = new System.Windows.Thickness { Left = nx - MISSILE_ENEMY_MARGIN, Top = ny - MISSILE_ENEMY_MARGIN };
-            // 다음 좌표로 갱신 
-            s_enemySx = nx;
-            s_enemySy = ny;
+
+            // 상태 업데이트
+            updateStatus(nx, ny, 2);
+           
+        }
+
+        private void updateStatus(float x, float y, int option)
+        {
+            if (option == 1)
+            {
+                // 새로 넘어온 좌표로 이미지 이동시키기
+                img_missile.Margin = new System.Windows.Thickness { Left = x - MISSILE_ENEMY_MARGIN, Top = y - MISSILE_ENEMY_MARGIN };
+                // 다음 좌표로 갱신
+                setMissilePos(x, y);
+                
+            }
+            else if (option == 2)
+            {
+                // 새로 넘어온 좌표로 이미지 이동시키기
+                img_enemyE.Margin = new System.Windows.Thickness { Left = x - MISSILE_ENEMY_MARGIN, Top = y - MISSILE_ENEMY_MARGIN };
+                // 다음 좌표로 갱신 
+                setEnemyStartPos(x, y);
+
+            }
         }
         
 
